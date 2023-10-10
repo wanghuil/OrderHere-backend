@@ -1,12 +1,11 @@
-package com.backend.OrderHere.entity;
+package com.backend.OrderHere.model;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.*;
-import java.time.OffsetDateTime;
+import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -21,11 +20,11 @@ public class OrderItems {
     @Column(name = "order_item_id", nullable = false)
     private UUID orderItemId;
 
-    @ManyToOne
+//    @ManyToOne TODO
     @Column(name = "order_id", nullable = false)
     private Integer OrderId;
-    
-    @ManyToOne
+
+//    @ManyToOne TODO
     @Column(name = "dish_id", nullable = false)
     private Integer DishId;
 

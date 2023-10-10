@@ -2,10 +2,11 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.1.4'
 	id 'io.spring.dependency-management' version '1.1.3'
+	id 'jacoco'
 }
 
 group = 'com.backend'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0'
 
 java {
 	sourceCompatibility = '17'
@@ -22,24 +23,76 @@ repositories {
 }
 
 dependencies {
+	// swagger
+	implementation 'io.springfox:springfox-swagger2:2.9.2'
+    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+
+	// spring
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-amqp'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-	implementation 'org.flywaydb:flyway-core'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
-	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+	// json
+	implementation 'org.apache.commons:commons-lang3'
+    implementation 'com.fasterxml.jackson.core:jackson-core'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+	implementation 'org.bouncycastle:bcprov-jdk15on'
+	implementation 'com.google.code.gson:gson'
+
+	// jwt
+//	implementation 'io.jsonwebtoken:jjwt-api'
+//	runtimeOnly 'io.jsonwebtoken:jjwt-impl'
+//	runtimeOnly 'io.jsonwebtoken:jjwt-jackson'
+
+
+	// database
+	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+//	implementation 'org.mapstruct:mapstruct'
+//	annotationProcessor 'org.mapstruct:mapstruct-processor'
+	implementation 'org.flywaydb:flyway-core'
+	runtimeOnly 'org.postgresql:postgresql'
+//	implementation 'redis.clients:jedis'
+
+	// other
+	implementation 'com.sendgrid:sendgrid-java'
+	
+	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.amqp:spring-rabbit-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+//	testImplementation 'org.mockito:mockito-core'
+//	testImplementation 'org.mockito:mockito-junit-jupiter'
+
+	// development
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+//	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
+}
+
+jacoco {
+	toolVersion = "0.8.9"
+	reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
+}
+
+test {
+	finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+jacocoTestReport {
+	dependsOn test // tests are required to run before generating the report
+	reports {
+		xml.required = false
+		csv.required = false
+		html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+	}
 }
