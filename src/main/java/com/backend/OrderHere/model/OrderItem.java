@@ -6,29 +6,28 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import jakarta.persistence.*;
-import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 @DynamicUpdate
 @DynamicInsert
-@Table(name = "orderItems")
-public class OrderItems {
+@Table(name = "order_items")
+public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "order_item_id", nullable = false)
-    private UUID orderItemId;
+    private Long orderItemId;
 
-//    @ManyToOne TODO
-    @Column(name = "order_id", nullable = false)
-    private Integer OrderId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
 
-//    @ManyToOne TODO
-    @Column(name = "dish_id", nullable = false)
-    private Integer DishId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dish_id", nullable = false)
+    private Dish dish;
 
     @Column(name = "dish_quantity", nullable = false)
-    private Integer DishQuantity;
+    private Long dishQuantity;
 }
 
