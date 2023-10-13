@@ -13,7 +13,17 @@ CREATE TABLE "order_items"
 
 
 -- zzy Bookings
+CREATE TYPE booking_status AS ENUM ('PENDING', 'CONFIRMED', 'CANCELLED');
 
+CREATE TABLE Bookings
+(
+    booking_id       SERIAL PRIMARY KEY,
+    user_id          INTEGER                  NOT NULL REFERENCES Users (user_id),
+    table_number     INTEGER                  NOT NULL,
+    reservation_time TIMESTAMP WITH TIME ZONE NOT NULL,
+    status           booking_status           NOT NULL,
+    restaurant_id    INTEGER                  NOT NULL REFERENCES Restaurants (restaurant_id)
+);
 
 -- Steve Order
 
