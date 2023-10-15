@@ -1,4 +1,5 @@
 package com.backend.OrderHere.model;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +8,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 
 @Entity
 @Getter
@@ -16,10 +17,11 @@ import java.time.OffsetDateTime;
 @DynamicInsert
 @Table(name = "opening_hours")
 public class OpeningHours {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "opening_hours_id", nullable = false)
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "restaurant_id")
@@ -36,9 +38,9 @@ public class OpeningHours {
 
     @CreationTimestamp
     @Column(name = "created_time", nullable = false)
-    private OffsetDateTime createdTime;
+    private ZonedDateTime createdTime;
 
     @UpdateTimestamp
     @Column(name = "updated_time", nullable = false)
-    private OffsetDateTime updatedTime;
+    private ZonedDateTime updatedTime;
 }

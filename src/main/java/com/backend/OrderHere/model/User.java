@@ -1,5 +1,6 @@
 package com.backend.OrderHere.model;
 
+import com.backend.OrderHere.model.enums.UserRoleEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 
@@ -21,19 +23,9 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false, unique = true)
-    private Long userId;
-
-    //Link foreign keys
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Booking> bookings;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Order> orders;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Rating> ratings;
+    private Integer userId;
 
     @Column(name = "username", nullable = false)
     private String username;
@@ -55,14 +47,13 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "user_role", nullable = false)
-    private UserRole userRole;
+    private UserRoleEnum userRoleEnum;
 
     @CreationTimestamp
-    @Column(name = "created_Time", nullable = false)
-    private OffsetDateTime createdTime;
+    @Column(name = "created_time", nullable = false)
+    private ZonedDateTime createdTime;
 
     @UpdateTimestamp
-    @Column(name = "updated_Time", nullable = false)
-    private OffsetDateTime updatedTime;
-
+    @Column(name = "updated_time", nullable = false)
+    private ZonedDateTime updatedTime;
 }

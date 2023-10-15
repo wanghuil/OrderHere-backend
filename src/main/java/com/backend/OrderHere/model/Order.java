@@ -1,5 +1,7 @@
 package com.backend.OrderHere.model;
 
+import com.backend.OrderHere.model.enums.OrderStatus;
+import com.backend.OrderHere.model.enums.OrderType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,8 +10,8 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.List;
 
 @Entity
 @Getter
@@ -20,24 +22,13 @@ import java.util.List;
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id", nullable = false)
-    private Long orderId;
-
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderItem> orderItems;
+    private Integer orderId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-
-    @CreationTimestamp
-    @Column(name = "created_time", nullable = false)
-    private OffsetDateTime createdTime;
-
-    @UpdateTimestamp
-    @Column(name = "updated_time", nullable = false)
-    private OffsetDateTime updatedTime;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status", nullable = false)
@@ -57,13 +48,19 @@ public class Order {
     private String address;
 
     @Column(name = "total_price", nullable = false)
-    private Double totalPrice;
+    private BigDecimal totalPrice;
 
     @Column(name = "discount", nullable = false)
-    private Double discount;
+    private BigDecimal discount;
 
     @Column(name = "note")
     private String note;
 
+    @CreationTimestamp
+    @Column(name = "created_time", nullable = false)
+    private OffsetDateTime createdTime;
 
+    @UpdateTimestamp
+    @Column(name = "updated_time", nullable = false)
+    private OffsetDateTime updatedTime;
 }

@@ -1,4 +1,4 @@
-package com.backend.OrderHere.model;
+package com.backend.OrderHere.model.enums;
 
 public enum OrderStatus {
     ORDERED,

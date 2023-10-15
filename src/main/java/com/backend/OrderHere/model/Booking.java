@@ -17,38 +17,38 @@ import java.time.ZonedDateTime;
 @Setter
 @DynamicUpdate
 @DynamicInsert
-@Table(name = "bookings")
+@Table(name = "booking")
 public class Booking {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "booking_id", nullable = false)
-  private Long bookingId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "booking_id", nullable = false)
+    private Integer bookingId;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id", nullable = false)
-  private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-  @Column(name = "table_number", nullable = false)
-  private Integer tableNumber;
+    @Column(name = "table_number", nullable = false)
+    private Integer tableNumber;
 
-  @Column(name = "reservation_time", nullable = false)
-  private ZonedDateTime reservationTime;
+    @Column(name = "reservation_time", nullable = false)
+    private ZonedDateTime reservationTime;
 
-  @Enumerated(EnumType.STRING)
-  @Column(name = "status", nullable = false)
-  private BookingStatusEnum status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private BookingStatusEnum status;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "restaurant_id", nullable = false)
-  private Restaurant restaurant;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    private Restaurant restaurant;
 
-  @CreationTimestamp
-  @Column(name = "created_time", nullable = false)
-  private ZonedDateTime createdTime;
+    @CreationTimestamp
+    @Column(name = "created_time", nullable = false)
+    private ZonedDateTime createdTime;
 
-  @UpdateTimestamp
-  @Column(name = "updated_time", nullable = false)
-  private ZonedDateTime updatedTime;
+    @UpdateTimestamp
+    @Column(name = "updated_time", nullable = false)
+    private ZonedDateTime updatedTime;
 }
 

@@ -9,6 +9,8 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -18,21 +20,22 @@ import java.time.ZonedDateTime;
 @DynamicInsert
 @Table(name = "rating")
 public class Rating {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rating_id", nullable = false, unique = true)
-    private Long ratingId;
-    
+    private Integer ratingId;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
-    private Integer userId;
+    private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "dish_id", nullable = false)
-    private Integer dishId;
+    private Dish dish;
 
     @Column(name = "rating_value", nullable = false)
-    private Double ratingValue;
+    private BigDecimal ratingValue;
 
     @Column(name = "comments")
     private String comments;

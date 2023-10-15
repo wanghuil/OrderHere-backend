@@ -1,13 +1,10 @@
 services:
   postgres:
     image: 'postgres:15.4-alpine'
-    volumes:
-      - mydatabase_data:/var/lib/postgresql/data/
     environment:
       - 'POSTGRES_DB=postgres'
       - 'POSTGRES_PASSWORD=orderhere'
       - 'POSTGRES_USER=postgres'
-
     ports:
       - '5432:5432'
 
@@ -18,6 +15,3 @@ services:
 #      - 'RABBITMQ_DEFAULT_USER=rabbitmq'
 #    ports:
 #      - '5672:5672'
-
-volumes:
-  mydatabase_data: {}

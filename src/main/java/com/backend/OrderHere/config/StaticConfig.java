@@ -10,8 +10,6 @@ public class StaticConfig {
             "/configuration/security",
             "/swagger-ui.html",
             "/webjars/**",
-            // -- Prometheus Metrics
-            "/actuator/**",
             // -- API
             "/v1/public/**",
     };

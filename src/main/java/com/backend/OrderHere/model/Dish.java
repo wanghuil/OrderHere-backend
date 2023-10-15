@@ -1,11 +1,15 @@
-package com.backend.OrderHere.entity;
+package com.backend.OrderHere.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
 
@@ -14,9 +18,11 @@ import java.time.ZonedDateTime;
 @Setter
 @DynamicUpdate
 @DynamicInsert
-@Table(name = "Dishes")
-public class Dishes {
+@Table(name = "dish")
+public class Dish {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "dish_id", nullable = false)
     private Integer DishId;
 
@@ -25,9 +31,9 @@ public class Dishes {
 
     @Column(name = "description", nullable = true)
     private String Description;
-    
-    @Column(name = "price", nullable = false,precision = 10, scale = 2)
-    private Double Price;
+
+    @Column(name = "price", nullable = false, precision = 5, scale = 2)
+    private BigDecimal Price;
 
     @Column(name = "image_url", nullable = true)
     private String ImageUrl;
@@ -35,20 +41,20 @@ public class Dishes {
     @Column(name = "category", nullable = false)
     private String Category;
 
-
-    @Column(name = "rating", nullable = true,precision = 10, scale = 2)
-    private Double Rating;
+    @Column(name = "rating", nullable = true, precision = 3, scale = 1)
+    private BigDecimal Rating;
 
     @Column(name = "restaurant_id", nullable = false)
     private Integer RestaurantId;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "availability", nullable = false)
     private Boolean Availability;
 
-    @Column(name = "created_at", nullable = false)
-    private ZonedDateTime CreatedAt;
+    @CreationTimestamp
+    @Column(name = "created_time", nullable = false)
+    private ZonedDateTime createdTime;
 
-    @Column(name = "updated_at", nullable = false)
-    private ZonedDateTime UpdatedAt;
+    @UpdateTimestamp
+    @Column(name = "updated_time", nullable = false)
+    private ZonedDateTime updatedTime;
 }

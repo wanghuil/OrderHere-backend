@@ -8,7 +8,9 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Entity
@@ -16,12 +18,13 @@ import java.util.List;
 @Setter
 @DynamicUpdate
 @DynamicInsert
-@Table(name = "restaurants")
+@Table(name = "restaurant")
 public class Restaurant {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "restaurant_id", nullable = false)
-    private Long restaurantId;
+    private Integer restaurantId;
 
     @Column(nullable = false)
     private String name;
@@ -32,20 +35,17 @@ public class Restaurant {
     @Column(nullable = false)
     private String address;
 
-    @OneToMany(mappedBy = "restaurant")
-    private List<OpeningHours> openingHours;
-
     @Column(nullable = false)
     private String contactNumber;
 
     @Column
-    private Double averageRating;
+    private BigDecimal averageRating;
 
     @CreationTimestamp
     @Column(name = "created_time", nullable = false)
-    private OffsetDateTime createdTime;
+    private ZonedDateTime createdTime;
 
     @UpdateTimestamp
     @Column(name = "updated_time", nullable = false)
-    private OffsetDateTime updatedTime;
+    private ZonedDateTime updatedTime;
 }

@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
 import java.time.ZonedDateTime;
 
 @Entity
@@ -15,13 +16,13 @@ import java.time.ZonedDateTime;
 @Setter
 @DynamicUpdate
 @DynamicInsert
-@Table(name = "ingredients")
-public class Ingredients {
+@Table(name = "ingredient")
+public class Ingredient {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ingredient_id", nullable = false)
-    private Long ingredientId;
+    private Integer ingredientId;
 
     @Column(name = "ingredient_name", nullable = false)
     private String ingredientName;
@@ -32,9 +33,8 @@ public class Ingredients {
     @CreationTimestamp
     @Column(name = "created_time", nullable = false)
     private ZonedDateTime createdTime;
-  
+
     @UpdateTimestamp
     @Column(name = "updated_time", nullable = false)
     private ZonedDateTime updatedTime;
-
 }

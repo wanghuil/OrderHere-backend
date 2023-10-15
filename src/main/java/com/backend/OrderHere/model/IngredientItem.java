@@ -8,6 +8,8 @@ import jakarta.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -15,24 +17,24 @@ import java.time.ZonedDateTime;
 @Setter
 @DynamicUpdate
 @DynamicInsert
-@Table(name = "ingredientitems")
+@Table(name = "ingredient_item")
 public class IngredientItem {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ingredientitems_id", nullable = false)
-    private Long ingredientItemsId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ingredient_item_id", nullable = false)
+    private Integer ingredientItemsId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dish_id", nullable = false)
-    private Dishes dish;
+    private Dish dish;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ingredient_id", nullable = false)
-    private Ingredients ingredient;
+    private Ingredient ingredient;
 
     @Column(name = "quantity_value", nullable = false)
-    private Double quantityValue;
+    private BigDecimal quantityValue;
 
     @Column(name = "quantity_unit", nullable = false)
     private String quantityUnit;
@@ -40,7 +42,7 @@ public class IngredientItem {
     @CreationTimestamp
     @Column(name = "created_time", nullable = false)
     private ZonedDateTime createdTime;
-  
+
     @UpdateTimestamp
     @Column(name = "updated_time", nullable = false)
     private ZonedDateTime updatedTime;
