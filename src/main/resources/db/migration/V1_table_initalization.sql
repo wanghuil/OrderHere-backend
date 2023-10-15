@@ -49,7 +49,21 @@ CREATE TABLE "orders"
 );
 
 -- Simon Dishes
+CREATE TABLE Dishes
+(   
+    "dish_id"        BIGSERIAL PRIMARY KEY,
+    "dish_name"      VARCHAR(255)        NOT NULL,
+    "description"    VARCHAR(255)        NOT NULL,
+    "price"          DECIMAL(5,2)        NOT NULL,
+    "image_url"      VARCHAR(255)        NOT NULL,
+    "category"       VARCHAR(255)        NOT NULL,
+    "rating"         DECIMAL(3,1)                ,
+    "restaurant_id"  INTEGER             NOT NULL,
+    "availability"   BOOLEAN             NOT NULL,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 
+);
 
 -- Robin Restaurants
 

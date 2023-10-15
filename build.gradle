@@ -73,6 +73,9 @@ dependencies {
 	// development
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 //	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+
+	implementation 'org.hibernate:hibernate-core:5.5.7.Final'
+
 }
 
 tasks.named('test') {
