@@ -75,7 +75,30 @@ CREATE TABLE Dishes
 );
 
 -- Robin Restaurants
+create TABLE "restaurants"
+(
+    "restaurant_id"  BIGSERIAL PRIMARY KEY,
+    "name"           VARCHAR(255)        NOT NULL,
+    "description"    TEXT                NOT NULL,
+    "address"        VARCHAR(255)        NOT NULL,
+    "contact_number" VARCHAR(255)        NOT NULL,
+   "average_rating" DECIMAL(3,1),
+    "created_time" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    "updated_time" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
 
+create TYPE week as enum ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+
+create TABLE "opening_hours"
+(
+    "id"  BIGSERIAL PRIMARY KEY,
+    "restaurant_id" BIGINT REFERENCES "restaurants" ("restaurant_id"),
+    "day_of_week" week NOT NULL,
+    "opening_time" VARCHAR(255) NOT NULL,
+    "closing_time" VARCHAR(255) NOT NULL,
+    "created_time" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    "updated_time" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
 
 -- Charles Users
 
