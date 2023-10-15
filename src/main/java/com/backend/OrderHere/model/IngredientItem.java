@@ -15,19 +15,27 @@ import java.time.ZonedDateTime;
 @Setter
 @DynamicUpdate
 @DynamicInsert
-@Table(name = "ingredients")
-public class Ingredients {
+@Table(name = "ingredientitems")
+public class IngredientItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ingredient_id", nullable = false)
-    private Long ingredientId;
+    @Column(name = "ingredientitems_id", nullable = false)
+    private Long ingredientItemsId;
 
-    @Column(name = "ingredient_name", nullable = false)
-    private String ingredientName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dish_id", nullable = false)
+    private Dishes dish;
 
-    @Column(name = "unit", nullable = false)
-    private String unit;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ingredient_id", nullable = false)
+    private Ingredients ingredient;
+
+    @Column(name = "quantity_value", nullable = false)
+    private Double quantityValue;
+
+    @Column(name = "quantity_unit", nullable = false)
+    private String quantityUnit;
 
     @CreationTimestamp
     @Column(name = "created_time", nullable = false)
@@ -36,5 +44,9 @@ public class Ingredients {
     @UpdateTimestamp
     @Column(name = "updated_time", nullable = false)
     private ZonedDateTime updatedTime;
-
 }
+
+
+
+
+
