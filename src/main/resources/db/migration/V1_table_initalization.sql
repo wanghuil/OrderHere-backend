@@ -10,7 +10,16 @@ CREATE TABLE "order_items"
 );
 
 -- Photos Rating
-
+CREATE TABLE rating
+(
+    rating_id long PRIMARY KEY UNIQUE,
+    user_id integer NOT NULL REFERENCES Users (user_id),
+    dish_id integer NOT NULL REFERENCES DIshes (dish_id),
+    rating_value decimal NOT NULL,
+    comments varchar,
+    created_time TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_time TIMESTAMP WITH TIME ZONE NOT NULL
+);
 
 -- zzy Bookings
 CREATE TYPE booking_status AS ENUM ('PENDING', 'CONFIRMED', 'CANCELLED');
