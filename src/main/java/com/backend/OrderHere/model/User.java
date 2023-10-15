@@ -9,10 +9,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
-import java.util.List;
-
 
 @Entity
 @Getter
@@ -39,7 +36,7 @@ public class User {
     @Column(name = "avatar_url")
     private String avatarUrl;
 
-    @Column(name = "points")
+    @Column(name = "point")
     private int point;
 
     @Column(name = "address")

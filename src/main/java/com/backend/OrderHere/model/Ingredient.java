@@ -24,8 +24,8 @@ public class Ingredient {
     @Column(name = "ingredient_id", nullable = false)
     private Integer ingredientId;
 
-    @Column(name = "ingredient_name", nullable = false)
-    private String ingredientName;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @Column(name = "unit", nullable = false)
     private String unit;
