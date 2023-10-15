@@ -101,7 +101,19 @@ create TABLE "opening_hours"
 );
 
 -- Charles Users
-
+CREATE TYPE user_role AS ENUM ('CUSTOMER', 'MERCHANT', 'SYS_ADMIN');
+CREATE TABLE users(
+    user_id       BIGINT PRIMARY KEY NOT NULL UNIQUE,
+    username      VARCHAR(255)       NOT NULL,
+    password      VARCHAR(255)       NOT NULL,
+    user_email    VARCHAR(255)       NOT NULL UNIQUE,
+    avatar_url    VARCHAR(255)       NOT NULL,
+    points        INT,
+    address  VARCHAR(255),
+    user_role     user_role          NOT NULL,
+    created_time  TIMESTAMP          NOT NULL,
+    updated_time  TIMESTAMP          NOT NULL
+);
 
 -- shanshan Ingredients & Items
 
