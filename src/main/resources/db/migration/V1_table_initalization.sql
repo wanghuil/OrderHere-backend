@@ -22,7 +22,9 @@ CREATE TABLE Bookings
     table_number     INTEGER                  NOT NULL,
     reservation_time TIMESTAMP WITH TIME ZONE NOT NULL,
     status           booking_status           NOT NULL,
-    restaurant_id    INTEGER                  NOT NULL REFERENCES Restaurants (restaurant_id)
+    restaurant_id    INTEGER                  NOT NULL REFERENCES Restaurants (restaurant_id),
+    created_time     TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_time     TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 -- Steve Order
