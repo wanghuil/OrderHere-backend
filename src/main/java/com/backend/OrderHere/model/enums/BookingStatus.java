@@ -1,5 +1,5 @@
 package com.backend.OrderHere.model.enums;
 
-public enum BookingStatusEnum {
+public enum BookingStatus {
     PENDING, CONFIRMED, CANCELLED
 }

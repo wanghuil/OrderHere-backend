@@ -1,6 +1,6 @@
 package com.backend.OrderHere.model;
 
-import com.backend.OrderHere.model.enums.UserRoleEnum;
+import com.backend.OrderHere.model.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,8 +24,14 @@ public class User {
     @Column(name = "user_id", nullable = false, unique = true)
     private Integer userId;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
+
+    @Column(name = "firstname", nullable = false)
+    private String firstname;
+
+    @Column(name = "lastname", nullable = false)
+    private String lastname;
 
     @Column(name = "password", nullable = false)
     private String password;
@@ -39,12 +45,9 @@ public class User {
     @Column(name = "point")
     private int point;
 
-    @Column(name = "address")
-    private String address;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "user_role", nullable = false)
-    private UserRoleEnum userRoleEnum;
+    private UserRole userRoleEnum;
 
     @CreationTimestamp
     @Column(name = "created_time", nullable = false)

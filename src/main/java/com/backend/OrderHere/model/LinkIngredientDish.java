@@ -17,13 +17,13 @@ import java.time.ZonedDateTime;
 @Setter
 @DynamicUpdate
 @DynamicInsert
-@Table(name = "ingredient_item")
-public class IngredientItem {
+@Table(name = "link_ingredient_dish")
+public class LinkIngredientDish {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ingredient_item_id", nullable = false)
-    private Integer ingredientItemsId;
+    @Column(name = "link_ingredient_dish_id", nullable = false)
+    private Integer linkIngredientDishId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dish_id", nullable = false)

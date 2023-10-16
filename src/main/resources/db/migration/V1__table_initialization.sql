@@ -1,4 +1,5 @@
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE
+EXTENSION IF NOT EXISTS pgcrypto;
 
 CREATE TYPE user_role AS ENUM ('customer', 'merchant', 'sys_admin');
 CREATE TYPE booking_status AS ENUM ('pending', 'confirmed', 'cancelled');
@@ -9,15 +10,26 @@ CREATE TYPE week AS ENUM ('monday', 'tuesday', 'wednesday', 'thursday', 'friday'
 CREATE TABLE users
 (
     user_id      serial PRIMARY KEY       NOT NULL UNIQUE,
-    username     varchar(255)             NOT NULL,
+    username     varchar(255)             NOT NULL UNIQUE,
+    firstname    varchar(255)             NOT NULL,
+    lastname     varchar(255)             NOT NULL,
     password     varchar(255)             NOT NULL,
     user_email   varchar(255)             NOT NULL UNIQUE,
     avatar_url   varchar(255)             NOT NULL,
     point        integer,
-    address      varchar(255),
     user_role    user_role                NOT NULL,
     created_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE user_address
+(
+    user_address_id serial PRIMARY KEY       NOT NULL UNIQUE,
+    user_id         integer                  NOT NULL REFERENCES users (user_id),
+    address         varchar(255)             NOT NULL,
+    is_default      boolean                  NOT NULL DEFAULT FALSE,
+    created_time    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_time    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE ingredient
@@ -67,15 +79,15 @@ CREATE TABLE dish
     updated_time  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE ingredient_item
+CREATE TABLE link_ingredient_dish
 (
-    ingredient_item_id serial PRIMARY KEY       NOT NULL UNIQUE,
-    dish_id            integer                  NOT NULL REFERENCES dish (dish_id),
-    ingredient_id      integer                  NOT NULL REFERENCES ingredient (ingredient_id),
-    quantity_value     decimal(10, 2)           NOT NULL,
-    quantity_unit      varchar(50)              NOT NULL,
-    created_time       TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_time       TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+    link_ingredient_dish_id serial PRIMARY KEY       NOT NULL UNIQUE,
+    dish_id                 integer                  NOT NULL REFERENCES dish (dish_id),
+    ingredient_id           integer                  NOT NULL REFERENCES ingredient (ingredient_id),
+    quantity_value          decimal(10, 2)           NOT NULL,
+    quantity_unit           varchar(50)              NOT NULL,
+    created_time            TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_time            TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE rating
@@ -96,7 +108,7 @@ CREATE TABLE orders
     order_status order_status             NOT NULL,
     order_type   order_type               NOT NULL,
     table_number integer,
-    pickup_time  TIMESTAMP,
+    pickup_time  TIMESTAMP WITH TIME ZONE,
     address      varchar(255),
     total_price  decimal(10, 2)           NOT NULL,
     discount     decimal(10, 2)           NOT NULL,
@@ -117,12 +129,12 @@ CREATE TABLE booking
     updated_time     TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE order_item
+CREATE TABLE link_order_dish
 (
-    order_item_id serial PRIMARY KEY       NOT NULL UNIQUE,
-    order_id      integer                  NOT NULL REFERENCES orders (order_id),
-    dish_id       integer                  NOT NULL REFERENCES dish (dish_id),
-    dish_quantity integer                  NOT NULL,
-    created_time  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_time  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+    link_order_dish_id serial PRIMARY KEY       NOT NULL UNIQUE,
+    order_id           integer                  NOT NULL REFERENCES orders (order_id),
+    dish_id            integer                  NOT NULL REFERENCES dish (dish_id),
+    dish_quantity      integer                  NOT NULL,
+    created_time       TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_time       TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

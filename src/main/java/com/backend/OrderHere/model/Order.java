@@ -12,6 +12,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 
 @Entity
 @Getter
@@ -58,9 +59,9 @@ public class Order {
 
     @CreationTimestamp
     @Column(name = "created_time", nullable = false)
-    private OffsetDateTime createdTime;
+    private ZonedDateTime createdTime;
 
     @UpdateTimestamp
     @Column(name = "updated_time", nullable = false)
-    private OffsetDateTime updatedTime;
+    private ZonedDateTime updatedTime;
 }

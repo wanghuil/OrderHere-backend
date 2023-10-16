@@ -1,6 +1,6 @@
 package com.backend.OrderHere.model;
 
-import com.backend.OrderHere.model.enums.BookingStatusEnum;
+import com.backend.OrderHere.model.enums.BookingStatus;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -37,7 +37,7 @@ public class Booking {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private BookingStatusEnum status;
+    private BookingStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
