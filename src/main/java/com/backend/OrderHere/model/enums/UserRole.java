@@ -1,5 +1,5 @@
 package com.backend.OrderHere.model.enums;
 
 public enum UserRole {
-    CUSTOMER, MERCHANT, SYS_ADMIN
+    customer, merchant, sys_admin
 }
