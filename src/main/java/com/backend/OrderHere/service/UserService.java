@@ -2,7 +2,7 @@ package com.backend.OrderHere.service;
 
 import com.backend.OrderHere.dto.UserProfileUpdateDTO;
 import com.backend.OrderHere.exception.DataIntegrityException;
-import com.backend.OrderHere.exception.UserNotFoundException;
+import com.backend.OrderHere.exception.ResourceNotFoundException;
 import com.backend.OrderHere.mapper.UserMapper;
 import com.backend.OrderHere.model.User;
 import com.backend.OrderHere.repository.UserRepository;
@@ -24,7 +24,7 @@ public class UserService {
 
   public UserProfileUpdateDTO updateUserProfile(Integer userId, UserProfileUpdateDTO dto) {
     User user = userRepository.findById(userId)
-      .orElseThrow(() -> new UserNotFoundException("User not found"));
+      .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     try {
       userMapper.updateUserFromUserProfileUpdateDTO(dto, user);
       User updatedUser = userRepository.save(user);

@@ -2,13 +2,12 @@ package com.backend.OrderHere.model;
 
 import com.backend.OrderHere.model.enums.OrderStatus;
 import com.backend.OrderHere.model.enums.OrderType;
+import io.hypersistence.utils.hibernate.type.basic.PostgreSQLEnumType;
 import jakarta.persistence.*;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -32,18 +31,20 @@ public class Order {
     private User user;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "order_status", nullable = false)
+    @Type(PostgreSQLEnumType.class)
+    @Column(name = "order_status", nullable = false, columnDefinition = "order_status")
     private OrderStatus orderStatus;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "order_type", nullable = false)
+    @Type(PostgreSQLEnumType.class)
+    @Column(name = "order_type", nullable = false, columnDefinition = "order_type")
     private OrderType orderType;
 
     @Column(name = "table_number")
     private Integer tableNumber;
 
     @Column(name = "pickup_time")
-    private OffsetDateTime pickupTime;
+    private ZonedDateTime pickupTime;
 
     @Column(name = "address")
     private String address;

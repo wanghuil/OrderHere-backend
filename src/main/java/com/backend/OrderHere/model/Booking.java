@@ -1,14 +1,13 @@
 package com.backend.OrderHere.model;
 
 import com.backend.OrderHere.model.enums.BookingStatus;
+import io.hypersistence.utils.hibernate.type.basic.PostgreSQLEnumType;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.*;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.ZonedDateTime;
 
@@ -36,7 +35,8 @@ public class Booking {
     private ZonedDateTime reservationTime;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(name = "status", nullable = false, columnDefinition = "booking_status")
+    @Type(PostgreSQLEnumType.class)
     private BookingStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
