@@ -24,8 +24,7 @@ repositories {
 
 dependencies {
     // swagger
-    implementation 'io.springfox:springfox-swagger2:2.9.2'
-    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.0'
 
     // spring
     implementation 'org.springframework.boot:spring-boot-starter-actuator:3.1.4'
