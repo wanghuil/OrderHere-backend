@@ -138,3 +138,19 @@ CREATE TABLE link_order_dish
     created_time       TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_time       TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+
+create TABLE category
+(
+    category_id serial primary key NOT NULL UNIQUE,
+    restaurant_id integer NOT NULL,
+    category_name varchar(255) NOT NULL UNIQUE,
+    created_time       TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_time       TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE dish
+    ADD COLUMN category_id integer REFERENCES category(category_id);
+
+ALTER TABLE dish DROP COLUMN IF EXISTS category;
+

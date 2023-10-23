@@ -24,31 +24,28 @@ public class Dish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "dish_id", nullable = false)
-    private Integer DishId;
+    private Integer dishId;
 
     @Column(name = "dish_name", nullable = false)
-    private String DishName;
+    private String dishName;
 
     @Column(name = "description", nullable = true)
-    private String Description;
+    private String description;
 
     @Column(name = "price", nullable = false, precision = 5, scale = 2)
-    private BigDecimal Price;
+    private BigDecimal price;
 
     @Column(name = "image_url", nullable = true)
-    private String ImageUrl;
-
-    @Column(name = "category", nullable = false)
-    private String Category;
+    private String imageUrl;
 
     @Column(name = "rating", nullable = true, precision = 3, scale = 1)
-    private BigDecimal Rating;
+    private BigDecimal rating;
 
     @Column(name = "restaurant_id", nullable = false)
-    private Integer RestaurantId;
+    private Integer restaurantId;
 
     @Column(name = "availability", nullable = false)
-    private Boolean Availability;
+    private Boolean availability;
 
     @CreationTimestamp
     @Column(name = "created_time", nullable = false)
@@ -57,4 +54,9 @@ public class Dish {
     @UpdateTimestamp
     @Column(name = "updated_time", nullable = false)
     private ZonedDateTime updatedTime;
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id")
+    private Category category;
 }
