@@ -1,12 +1,12 @@
 package com.backend.OrderHere.model;
 
+import com.backend.OrderHere.model.enums.Week;
+import io.hypersistence.utils.hibernate.type.basic.PostgreSQLEnumType;
 import jakarta.persistence.*;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 
 import java.time.ZonedDateTime;
 
@@ -27,13 +27,15 @@ public class OpeningHours {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    @Column(nullable = false)
-    private String dayOfWeek;
+    @Enumerated(EnumType.STRING)
+    @Type(PostgreSQLEnumType.class)
+    @Column(name = "day_of_week", nullable = false, columnDefinition = "week")
+    private Week dayOfWeek;
 
-    @Column(nullable = false)
+    @Column(name = "opening_time", nullable = false)
     private String openingTime;
 
-    @Column(nullable = false)
+    @Column(name = "closing_time", nullable = false)
     private String closingTime;
 
     @CreationTimestamp

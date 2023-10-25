@@ -3,19 +3,17 @@ package com.backend.OrderHere.service;
 import com.backend.OrderHere.dto.Order.OrderGetDTO;
 import com.backend.OrderHere.dto.Order.UpdateOrderStatusDTO;
 import com.backend.OrderHere.exception.ResourceNotFoundException;
-import com.backend.OrderHere.mapper.Order.OrderMapper;
-import com.backend.OrderHere.mapper.Order.UpdateOrderStatusMapper;
+import com.backend.OrderHere.mapper.OrderMapper;
 import com.backend.OrderHere.model.Order;
 import com.backend.OrderHere.model.enums.OrderStatus;
 import com.backend.OrderHere.model.enums.OrderType;
 import com.backend.OrderHere.repository.OrderRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static java.util.Arrays.stream;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +22,6 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     private final OrderMapper orderMapper;
-
-    private final UpdateOrderStatusMapper UpdateOrderStatusMapper;
 
     public List<OrderGetDTO> getAllOrders() {
         return orderRepository.findAll().stream().map(orderMapper::fromOrderToOrderGetDTO).collect(Collectors.toList());
@@ -43,12 +39,13 @@ public class OrderService {
         return orderRepository.findByOrderType(orderType).stream().map(orderMapper::fromOrderToOrderGetDTO).collect(Collectors.toList());
     }
 
+    @Transactional
     public UpdateOrderStatusDTO updateOrderStatus(UpdateOrderStatusDTO updateOrderStatusDTO) {
 
         Order order = orderRepository.findById(updateOrderStatusDTO.getOrderId()).orElseThrow(() -> new ResourceNotFoundException("Order not found"));
         order.setOrderStatus(updateOrderStatusDTO.getOrderStatus());
         orderRepository.save(order);
-        return UpdateOrderStatusMapper.fromOrdertoUpdateOrderStatusDTO(order);
+        return orderMapper.fromOrdertoUpdateOrderStatusDTO(order);
     }
 
 }
