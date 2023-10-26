@@ -5,7 +5,7 @@ import com.backend.OrderHere.dto.Order.UpdateOrderStatusDTO;
 import com.backend.OrderHere.model.enums.OrderStatus;
 import com.backend.OrderHere.model.enums.OrderType;
 import com.backend.OrderHere.service.OrderService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,10 +13,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/public/orders")
-@RequiredArgsConstructor
-public class OrderController {
 
+public class OrderController {
     private final OrderService orderService;
+
+    @Autowired
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
     @GetMapping
     public ResponseEntity<List<OrderGetDTO>> getAllOrders() {
@@ -30,7 +34,7 @@ public class OrderController {
 
     @GetMapping("/status")
     public ResponseEntity<List<OrderGetDTO>> getOrderByOrderStatus(@RequestParam("orderStatus") OrderStatus orderStatus) {
-            return ResponseEntity.ok(orderService.getOrderByOrderStatus(orderStatus));
+        return ResponseEntity.ok(orderService.getOrderByOrderStatus(orderStatus));
     }
 
     @GetMapping("/type")
@@ -42,5 +46,5 @@ public class OrderController {
     public ResponseEntity<UpdateOrderStatusDTO> updateOrderStatus(@RequestBody UpdateOrderStatusDTO updateOrderStatusDTO) {
         return ResponseEntity.ok().body(orderService.updateOrderStatus(updateOrderStatusDTO));
     }
-
 }
+
