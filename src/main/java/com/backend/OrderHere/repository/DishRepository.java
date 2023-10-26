@@ -12,4 +12,5 @@ import java.util.List;
 public interface DishRepository extends JpaRepository<Dish, Integer> {
     Page<Dish> findDishesByRestaurantId(Integer restaurantId, Pageable pageable);
     List<Dish> findAllByRestaurantIdAndCategoryCategoryId(Integer restaurantId, Integer categoryId);
+    Dish findByDishId(Integer dishId);
 }

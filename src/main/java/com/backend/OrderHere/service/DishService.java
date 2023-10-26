@@ -6,6 +6,7 @@ import com.backend.OrderHere.mapper.DishMapper;
 import com.backend.OrderHere.model.Dish;
 import com.backend.OrderHere.repository.DishRepository;
 import com.backend.OrderHere.service.enums.DishSort;
+import com.backend.OrderHere.util.PageableUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -30,13 +31,7 @@ public class DishService {
                                                                  int size,
                                                                  DishSort sort,
                                                                  Sort.Direction order) {
-        Pageable pageable;
-        if (size <= 0) {
-            pageable = Pageable.unpaged();
-        }
-        else {
-            pageable = PageRequest.of(page - 1, size, Sort.by(order, sort.getName()));
-        }
+        Pageable pageable = PageableUtil.determinePageable(page, size, Sort.by(order, sort.getName()));
 
         Page<Dish> dishPage = dishRepository.findDishesByRestaurantId(restaurantId, pageable);
 
