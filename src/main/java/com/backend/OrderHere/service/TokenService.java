@@ -1,5 +1,6 @@
 package com.backend.OrderHere.service;
 
+import com.backend.OrderHere.filter.JwtUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -37,39 +38,21 @@ public class TokenService {
             code.append(CHARACTERS.charAt(index));
         }
 
+        //generate jwt token and map it to codeToTokenMap
+        String jwt = JwtUtil.generateToken(code.toString());
+        codeToTokenMap.put(code.toString(), jwt);
+
         return code.toString();
     }
 
-    public void generateToken(String code) {
-        Date expirationDate = new Date(System.currentTimeMillis() + (long) EXPIRATION_TIME_MINUTES * 60 * 1000);
-
-        String jwt = Jwts.builder()
-                .setSubject(code)
-                .setIssuedAt(new Date())
-                .setExpiration(expirationDate)
-                .signWith(key)
-                .compact();
-        codeToTokenMap.put(code, jwt);
-    }
+//    public void generateToken(String code) {
+//        String jwt = JwtUtil.generateToken(code);
+//        codeToTokenMap.put(code, jwt);
+//    }
 
     public boolean isCodeValid(String code) {
-        String jwt = codeToTokenMap.get(code);
-        if (jwt == null) return false;
-        try {
-            Jws<Claims> claimsJws = Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(jwt);
-
-            // get token expiration time
-            Date expirationDate = claimsJws.getBody().getExpiration();
-
-            // check whether token is expired
-            return expirationDate.after(new Date());
-        } catch (Exception e) {
-            // invalid token
-            return false;
-        }
+        String token = codeToTokenMap.get(code);
+        return JwtUtil.checkExpirationTime(token);
     }
 }
 
