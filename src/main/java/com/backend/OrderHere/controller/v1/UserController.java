@@ -14,7 +14,7 @@ import javax.mail.MessagingException;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/v1/public/users")
 public class UserController {
 
   private final UserService userService;

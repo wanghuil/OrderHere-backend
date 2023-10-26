@@ -16,7 +16,7 @@ import java.util.List;
 import static com.backend.OrderHere.util.SortHelper.getSortOrder;
 
 @RestController
-@RequestMapping("/dish")
+@RequestMapping("/v1/public/dish")
 @RequiredArgsConstructor
 @Validated
 public class DishController {
