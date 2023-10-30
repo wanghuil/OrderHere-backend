@@ -1,0 +1,94 @@
+INSERT INTO users (username, firstname, lastname, password, user_email, avatar_url, point, user_role)
+VALUES ('user1', 'user', 'user', '$2a$10$.wLQ2xMfPLjfhCG6cnw.PupQunIZhv6F09ChvsxwvJgnAT.JZUtxq', 'user@user.com',
+        'https://freepngimg.com/thumb/google/66726-customer-account-google-service-button-search-logo.png',
+        100, 'customer');
+-- password:   123456
+
+
+INSERT INTO user_address (user_id, address, is_default)
+VALUES
+    (1, '123 Main St', true),
+    (1, '456 Elm St', false);
+
+
+INSERT INTO ingredient (name, unit)
+VALUES
+    ('Sugar', 'grams'),
+    ('Flour', 'grams'),
+    ('Butter', 'grams'),
+    ('Eggs', 'pieces');
+
+
+INSERT INTO restaurant (name, description, address, contact_number, abn,
+                        owner_name, owner_mobile, owner_address, owner_email, owner_crn, average_rating)
+VALUES ('Restaurant A', 'A description of Restaurant A', '123 Main St', '123-456-7890',
+        'ABN123456789', 'John Doe', '987-654-3210', '456 Elm St', 'john@example.com', '123456789A', 4.5),
+       ('Restaurant B', 'A description of Restaurant B', '789 Oak St',
+        '987-654-3210', 'ABN987654321', 'Jane Smith', '123-456-7890', '123 Main St',
+        'jane@example.com', '123456789A', 4.2);
+
+
+INSERT INTO opening_hours (restaurant_id, day_of_week, opening_time, closing_time)
+VALUES
+    (1, 'monday', '09:00 AM', '05:00 PM'),
+    (1, 'tuesday', '09:00 AM', '05:00 PM'),
+    (1, 'wednesday', '09:00 AM', '05:00 PM'),
+    (1, 'thursday', '09:00 AM', '05:00 PM'),
+    (1, 'friday', '09:00 AM', '08:00 PM'),
+    (1, 'saturday', '10:00 AM', '08:00 PM'),
+    (1, 'sunday', 'Closed', 'Closed');
+
+
+INSERT INTO category (restaurant_id, category_name)
+VALUES (1, 'Main Dishes');
+
+
+INSERT INTO dish (restaurant_id, dish_name, description, price, image_url, rating, availability, category_id)
+VALUES
+    (1, 'Pasta Carbonara', 'Classic Italian pasta dish with bacon and eggs', 12.99, 'https://example.com/pasta.jpg', 4.5, true, 1),
+    (1, 'Margherita Pizza', 'Traditional pizza with tomato sauce, mozzarella, and basil', 9.99, 'https://example.com/pizza.jpg', 4.2, true, 1),
+    (1, 'Sushi Roll', 'Assorted sushi rolls with fresh seafood', 14.99, 'https://example.com/sushi.jpg', 4.7, true, 1),
+    (1, 'Teriyaki Chicken', 'Grilled chicken with teriyaki sauce and steamed rice', 10.99, 'https://example.com/chicken.jpg', 4.0, true, 1);
+
+INSERT INTO link_ingredient_dish (dish_id, ingredient_id, quantity_value, quantity_unit)
+VALUES
+    (1, 1, 200, 'grams'),
+    (1, 2, 50, 'grams'),
+    (2, 3, 100, 'grams'),
+    (2, 4, 150, 'grams'),
+    (3, 1, 200, 'grams'),
+    (3, 2, 50, 'grams'),
+    (4, 3, 100, 'grams'),
+    (4, 4, 150, 'grams');
+
+
+INSERT INTO rating (user_id, dish_id, rating_value, comments)
+VALUES (1, 1, 4.5, 'Delicious dish!'),
+       (1, 1, 3.8, 'Good but could be better'),
+       (1, 2, 5.0, 'Highly recommended'),
+       (1, 2, 4.2, 'Great flavor'),
+       (1, 3, 2.5, 'Not my taste'),
+       (1, 4, 4.7, 'Amazing presentation');
+
+
+INSERT INTO orders (user_id, order_status, order_type, table_number, pickup_time, address, total_price, discount, note)
+VALUES (1, 'pending', 'delivery', NULL, NULL, '123 Main St', 50.00, 0.00, 'No special instructions'),
+       (1, 'preparing', 'pickup', NULL, NULL, NULL, 35.50, 0.00, 'Extra ketchup packets'),
+       (1, 'finished', 'dine_in', 1, NULL, NULL, 75.25, 10.00, 'Call upon arrival'),
+        (1, 'cancelled', 'dine_in', NULL, NULL, NULL, 75.25, 10.00, 'Call upon arrival');
+
+
+INSERT INTO booking (user_id, table_number, reservation_time, status, restaurant_id)
+VALUES (1, 1, '2023-10-31 19:30:00+00', 'confirmed', 1);
+
+
+INSERT INTO link_order_dish (order_id, dish_id, dish_quantity)
+VALUES (1, 1, 2),
+       (1, 3, 1),
+       (2, 2, 3),
+       (2, 4, 1),
+       (3, 1, 1),
+       (4, 4, 2);
+
+
+
