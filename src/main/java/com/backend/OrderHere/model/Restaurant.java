@@ -10,6 +10,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -64,4 +66,7 @@ public class Restaurant {
     @UpdateTimestamp
     @Column(name = "updated_time", nullable = false)
     private ZonedDateTime updatedTime;
+
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<OpeningHours> openingHours = new ArrayList<>();
 }

@@ -3,6 +3,7 @@ package com.backend.OrderHere.dto.Restaurant;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 public class RestaurantGetDTO {
@@ -19,5 +20,7 @@ public class RestaurantGetDTO {
     private String ownerEmail;
     private String ownerCrn;
     private BigDecimal averageRating;
+
+    private List<OpeningHourDTO> openingHours;
 
 }

@@ -6,6 +6,7 @@ import com.backend.OrderHere.dto.Restaurant.RestaurantUpdateDTO;
 import com.backend.OrderHere.exception.DataIntegrityViolationException;
 import com.backend.OrderHere.exception.ResourceNotFoundException;
 import com.backend.OrderHere.mapper.RestaurantMapper;
+import com.backend.OrderHere.model.OpeningHours;
 import com.backend.OrderHere.model.Restaurant;
 import com.backend.OrderHere.repository.RestaurantRepository;
 import jakarta.transaction.Transactional;
@@ -25,9 +26,14 @@ public class RestaurantService {
 
     @Transactional
     public RestaurantGetDTO createRestaurant(RestaurantCreateDTO restaurantCreateDTO) {
-
         try {
-            Restaurant restaurant = restaurantRepository.save(restaurantMapper.fromRestaurantCreateDTOToRestaurant(restaurantCreateDTO));
+            Restaurant restaurant = restaurantMapper.fromRestaurantCreateDTOToRestaurant(restaurantCreateDTO);
+            if(restaurant.getOpeningHours() != null) {
+                for (OpeningHours hours : restaurant.getOpeningHours()) {
+                    hours.setRestaurant(restaurant);
+                }
+            }
+            restaurant = restaurantRepository.save(restaurant);
             return restaurantMapper.fromRestaurantToRestaurantGetDTO(restaurant);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException(e.getMessage());

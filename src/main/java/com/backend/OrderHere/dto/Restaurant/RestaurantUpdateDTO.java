@@ -3,6 +3,8 @@ package com.backend.OrderHere.dto.Restaurant;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class RestaurantUpdateDTO {
 
@@ -24,4 +26,5 @@ public class RestaurantUpdateDTO {
     @Pattern(regexp = "^\\d{9}[A-Za-z]$", message = "Field must be 9 digits followed by a letter")
     private String ownerCrn;
 
+    private List<OpeningHourDTO> openingHours;
 }
