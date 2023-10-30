@@ -24,7 +24,7 @@ public class CategoryController {
         return categoryService.getCategoryByRestaurantId(restaurantId);
     }
 
-    @PostMapping("/{restaurantId}")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryGetDto createCategory(@Valid @RequestBody CategoryPostDto categoryPostDto) {
         return categoryService.createCategory(categoryPostDto);
