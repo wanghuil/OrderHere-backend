@@ -100,3 +100,17 @@ jacocoTestReport {
         html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
     }
 }
+
+apply plugin: 'checkstyle'
+checkstyle {
+    toolVersion = '10.12.4'
+    configFile = file("src/main/resources/static/checkstyleConfig.xml")
+    sourceSets = [sourceSets.main]
+    showViolations = true
+}
+
+task checkstyle(type: Checkstyle) {
+    configFile = file("src/main/resources/static/checkstyleConfig.xml")
+    source = sourceSets.main.allJava
+    classpath = files()
+}
