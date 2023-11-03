@@ -11,8 +11,8 @@ VALUES (1, '123 Main St', true),
 
 
 INSERT INTO ingredient (ingredient_id, name, unit)
-VALUES (5, 'Sugar', 'grams'),
-       (6, 'Flour', 'grams'),
+VALUES (1, 'Sugar', 'grams'),
+       (2, 'Flour', 'grams'),
        (3, 'Butter', 'grams'),
        (4, 'Eggs', 'pieces');
 
