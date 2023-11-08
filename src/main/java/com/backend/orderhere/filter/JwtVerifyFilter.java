@@ -34,7 +34,6 @@ public class JwtVerifyFilter extends OncePerRequestFilter {
 
 
     //retrieve response authorization header
-    log.debug("JwtVerifyFilter -> doFilterInternal() start");
     String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
     //proceed to next filter if authorizationHeader is empty or not start with prefix
