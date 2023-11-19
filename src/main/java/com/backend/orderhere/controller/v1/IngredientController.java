@@ -33,11 +33,11 @@ public class IngredientController {
         return linkIngredientDishService.createLink(postIngredientDTO);
     }
 
-    @GetMapping("dish/{dishID}")
-    public ResponseEntity<List<GetIngredientDTO>> findByDishID(@PathVariable Integer dishID) {
-        List<GetIngredientDTO> dtoList = linkIngredientDishService.findGetIngredientDTOByDishID(dishID);
-        return ResponseEntity.ok(dtoList);
-    }
+    // @GetMapping("dish/{dishID}")
+    // public ResponseEntity<List<GetIngredientDTO>> findByDishID(@PathVariable Integer dishID) {
+    //     List<GetIngredientDTO> dtoList = linkIngredientDishService.findGetIngredientDTOByDishID(dishID);
+    //     return ResponseEntity.ok(dtoList);
+    // }
 
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteLink(@RequestBody DeleteIngredientDTO deleteIngredientDTO) {

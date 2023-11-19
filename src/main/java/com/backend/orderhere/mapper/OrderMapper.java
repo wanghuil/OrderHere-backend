@@ -16,10 +16,6 @@ public interface OrderMapper {
 
     UpdateOrderStatusDTO fromOrdertoUpdateOrderStatusDTO(Order updatedOrder);
 
-<<<<<<< HEAD
-  // Order dtoToOrder(PlaceOrderDTO dto);
-=======
     Order dtoToOrder(PlaceOrderDTO dto);
->>>>>>> main
 }
 
