@@ -65,19 +65,19 @@ public class OrderService {
   }
 
 
-  public Order PlaceOrder(PlaceOrderDTO placeOrderDTO) {
-    Order order = orderMapper.dtoToOrder(placeOrderDTO);
-    order = orderRepository.save(order);
-    List<LinkOrderDish> links = new ArrayList<LinkOrderDish>();
-    for (OrderDishDTO orderDishDTO : placeOrderDTO.getDishes()) {
-      LinkOrderDish link = new LinkOrderDish();
-      link.setOrder(order);
-      Dish dish = dishRepository.findById(orderDishDTO.getDishId()).orElseThrow(() -> new RuntimeException("Dish not found with ID" + orderDishDTO.getDishId()));
-      link.setDish(dish);
-      link.setDishQuantity(orderDishDTO.getDishQuantity());
-      links.add(link);
-    }
-    linkOrderDishRepository.saveAll(links);
-    return order;
-  }
+  // public Order PlaceOrder(PlaceOrderDTO placeOrderDTO) {
+  //   Order order = orderMapper.dtoToOrder(placeOrderDTO);
+  //   order = orderRepository.save(order);
+  //   List<LinkOrderDish> links = new ArrayList<LinkOrderDish>();
+  //   for (OrderDishDTO orderDishDTO : placeOrderDTO.getDishes()) {
+  //     LinkOrderDish link = new LinkOrderDish();
+  //     link.setOrder(order);
+  //     Dish dish = dishRepository.findById(orderDishDTO.getDishId()).orElseThrow(() -> new RuntimeException("Dish not found with ID" + orderDishDTO.getDishId()));
+  //     link.setDish(dish);
+  //     link.setDishQuantity(orderDishDTO.getDishQuantity());
+  //     links.add(link);
+  //   }
+  //   linkOrderDishRepository.saveAll(links);
+  //   return order;
+  // }
 }
