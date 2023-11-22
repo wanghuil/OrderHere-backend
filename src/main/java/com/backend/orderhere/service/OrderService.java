@@ -9,11 +9,13 @@ import com.backend.orderhere.mapper.OrderMapper;
 import com.backend.orderhere.model.Dish;
 import com.backend.orderhere.model.LinkOrderDish;
 import com.backend.orderhere.model.Order;
+import com.backend.orderhere.model.User;
 import com.backend.orderhere.model.enums.OrderStatus;
 import com.backend.orderhere.model.enums.OrderType;
 import com.backend.orderhere.repository.DishRepository;
 import com.backend.orderhere.repository.LinkOrderDishRepository;
 import com.backend.orderhere.repository.OrderRepository;
+import com.backend.orderhere.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,14 +31,16 @@ public class OrderService {
     private final OrderMapper orderMapper;
     private final LinkOrderDishRepository linkOrderDishRepository;
     private final DishRepository dishRepository;
+    private final UserRepository userRepository;
 
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, LinkOrderDishRepository linkOrderRepository, DishRepository dishRepository) {
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, LinkOrderDishRepository linkOrderRepository, DishRepository dishRepository, UserRepository userRepository) {
         this.orderRepository = orderRepository;
         this.linkOrderDishRepository = linkOrderRepository;
         this.dishRepository = dishRepository;
         this.orderMapper = orderMapper;
+        this.userRepository = userRepository;
     }
 
     public List<OrderGetDTO> getAllOrders() {
@@ -66,7 +70,9 @@ public class OrderService {
 
 
     public Order PlaceOrder(PlaceOrderDTO placeOrderDTO) {
+        User user = userRepository.findByUserId(placeOrderDTO.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         Order order = orderMapper.dtoToOrder(placeOrderDTO);
+        order.setUser(user);
         order = orderRepository.save(order);
         List<LinkOrderDish> links = new ArrayList<LinkOrderDish>();
         for (OrderDishDTO orderDishDTO : placeOrderDTO.getDishes()) {

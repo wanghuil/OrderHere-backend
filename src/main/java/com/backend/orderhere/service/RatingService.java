@@ -2,9 +2,11 @@ package com.backend.orderhere.service;
 
 import com.backend.orderhere.dto.rating.RatingGetDto;
 import com.backend.orderhere.dto.rating.RatingPostDto;
+import com.backend.orderhere.exception.ResourceNotFoundException;
 import com.backend.orderhere.mapper.RatingMapper;
 import com.backend.orderhere.model.Dish;
 import com.backend.orderhere.model.Rating;
+import com.backend.orderhere.model.User;
 import com.backend.orderhere.repository.DishRepository;
 import com.backend.orderhere.repository.RatingRepository;
 import com.backend.orderhere.repository.UserRepository;
@@ -21,49 +23,50 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class RatingService {
-  private final RatingRepository ratingRepository;
-  private final RatingMapper ratingMapper;
-  private final DishRepository dishRepository;
-  private final UserRepository userRepository;
+    private final RatingRepository ratingRepository;
+    private final RatingMapper ratingMapper;
+    private final DishRepository dishRepository;
+    private final UserRepository userRepository;
 
-  public List<RatingGetDto> getRatingsByDishId(Integer dishId) {
-    List<Rating> ratingList = ratingRepository.findAllByDishDishId(dishId);
-    return ratingList.stream()
-        .map(ratingMapper::ratingToRatingGetDto)
-        .toList();
-  }
-
-  public List<RatingGetDto> getRatingsByUserId(Integer userId) {
-    List<Rating> ratingList = ratingRepository.findAllByUserUserId(userId);
-    return ratingList.stream().map(ratingMapper::ratingToRatingGetDto).toList();
-  }
-
-  public RatingGetDto createRating(RatingPostDto ratingPostDto) {
-    Rating rating = ratingMapper.ratingPostDtoToRating(ratingPostDto);
-    rating.setDish(dishRepository.findByDishId(ratingPostDto.getDishId()));
-    rating.setUser(userRepository.findByUserId(ratingPostDto.getUserId()));
-    ratingRepository.save(rating);
-    updateDishRating(rating.getDish().getDishId());
-
-    return ratingMapper.ratingToRatingGetDto(rating);
-  }
-
-  public void deleteRating(Integer ratingId) {
-    ratingRepository.deleteByRatingId(ratingId);
-    updateDishRating(ratingRepository.findByRatingId(ratingId).getDish().getDishId());
-  }
-
-  void updateDishRating(Integer dishId) {
-    Long ratingCount = ratingRepository.countByDishId(dishId);
-    BigDecimal averageRating = ratingRepository.calculateAverageRatingForDish(dishId);
-    Dish dish = dishRepository.findById(dishId).orElseThrow(() -> new IllegalArgumentException("Dish not found"));
-    if (averageRating == null || ratingCount < 5) {
-      dish.setRating(null);
-      log.info("Dish : {} doesn't have enough ratings yet", dishId);
-    } else {
-      dish.setRating(averageRating);
-      log.info("Dish : {} current rating changes to {}", dishId, averageRating);
+    public List<RatingGetDto> getRatingsByDishId(Integer dishId) {
+        List<Rating> ratingList = ratingRepository.findAllByDishDishId(dishId);
+        return ratingList.stream()
+                .map(ratingMapper::ratingToRatingGetDto)
+                .toList();
     }
-    dishRepository.save(dish);
-  }
+
+    public List<RatingGetDto> getRatingsByUserId(Integer userId) {
+        List<Rating> ratingList = ratingRepository.findAllByUserUserId(userId);
+        return ratingList.stream().map(ratingMapper::ratingToRatingGetDto).toList();
+    }
+
+    public RatingGetDto createRating(RatingPostDto ratingPostDto) {
+        Rating rating = ratingMapper.ratingPostDtoToRating(ratingPostDto);
+        rating.setDish(dishRepository.findByDishId(ratingPostDto.getDishId()));
+        User user = userRepository.findByUserId(ratingPostDto.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        rating.setUser(user);
+        ratingRepository.save(rating);
+        updateDishRating(rating.getDish().getDishId());
+
+        return ratingMapper.ratingToRatingGetDto(rating);
+    }
+
+    public void deleteRating(Integer ratingId) {
+        ratingRepository.deleteByRatingId(ratingId);
+        updateDishRating(ratingRepository.findByRatingId(ratingId).getDish().getDishId());
+    }
+
+    void updateDishRating(Integer dishId) {
+        Long ratingCount = ratingRepository.countByDishId(dishId);
+        BigDecimal averageRating = ratingRepository.calculateAverageRatingForDish(dishId);
+        Dish dish = dishRepository.findById(dishId).orElseThrow(() -> new IllegalArgumentException("Dish not found"));
+        if (averageRating == null || ratingCount < 5) {
+            dish.setRating(null);
+            log.info("Dish : {} doesn't have enough ratings yet", dishId);
+        } else {
+            dish.setRating(averageRating);
+            log.info("Dish : {} current rating changes to {}", dishId, averageRating);
+        }
+        dishRepository.save(dish);
+    }
 }
