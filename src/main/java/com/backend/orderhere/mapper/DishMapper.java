@@ -1,5 +1,6 @@
 package com.backend.orderhere.mapper;
 
+import com.backend.orderhere.dto.dish.DishCreateDto;
 import com.backend.orderhere.dto.dish.DishGetDto;
 import com.backend.orderhere.model.Dish;
 import org.mapstruct.Mapper;
@@ -12,4 +13,5 @@ public interface DishMapper {
   @Mapping(source = "category.categoryName", target = "categoryName")
   DishGetDto dishToDishGetDto(Dish dish);
 
+  Dish dishCreateDtoToDish(DishCreateDto dishCreateDto);
 }

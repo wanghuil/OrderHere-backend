@@ -1,6 +1,7 @@
 package com.backend.orderhere.service;
 
 import com.backend.orderhere.dto.PagingDto;
+import com.backend.orderhere.dto.dish.DishCreateDto;
 import com.backend.orderhere.dto.dish.DishGetDto;
 import com.backend.orderhere.mapper.DishMapper;
 import com.backend.orderhere.model.Dish;
@@ -52,5 +53,16 @@ public class DishService {
         .stream()
         .map(dishMapper::dishToDishGetDto)
         .toList();
+  }
+
+  @Transactional
+  public void createDish(DishCreateDto dishCreateDto) {
+    try {
+        Dish dish = dishMapper.dishCreateDtoToDish(dishCreateDto);
+        dishRepository.save(dish);
+        } catch (Exception e) {
+        log.error("Error occurred while creating dish", e);
+        throw e;
+    }
   }
 }
