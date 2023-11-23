@@ -54,6 +54,10 @@ public class RestaurantService {
     Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Restaurant not found"));
     try {
       restaurantMapper.updateRestaurantFromDto(restaurantUpdateDTO, restaurant);
+      restaurant.getOpeningHours().stream().map((openingHours -> {
+        openingHours.setRestaurant(restaurant);
+        return openingHours;
+      })).toList();
       Restaurant updatedRestaurant = restaurantRepository.save(restaurant);
       return restaurantMapper.fromRestaurantToRestaurantGetDTO(updatedRestaurant);
 

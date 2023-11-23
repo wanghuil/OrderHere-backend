@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class OpeningHourDTO {
+  private Integer id;
 
   @Pattern(regexp = "^(?i)(monday|tuesday|wednesday|thursday|friday|saturday|sunday)$", message = "dayOfWeek must be a valid day of the week")
   private String dayOfWeek;

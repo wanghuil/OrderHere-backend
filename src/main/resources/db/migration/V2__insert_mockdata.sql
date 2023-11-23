@@ -20,9 +20,9 @@ VALUES ('Sugar', 'grams'),
 INSERT INTO restaurant (name, description, address, contact_number, abn,
                         owner_name, owner_mobile, owner_address, owner_email, owner_crn, average_rating)
 VALUES ('Restaurant A', 'A description of Restaurant A', '123 Main St', '123-456-7890',
-        'ABN123456789', 'John Doe', '987-654-3210', '456 Elm St', 'john@example.com', '123456789A', 4.5),
+        '12345678901', 'John Doe', '987-654-3210', '456 Elm St', 'john@example.com', '123456789A', 4.5),
        ('Restaurant B', 'A description of Restaurant B', '789 Oak St',
-        '987-654-3210', 'ABN987654321', 'Jane Smith', '123-456-7890', '123 Main St',
+        '987-654-3210', '12345678902', 'Jane Smith', '123-456-7890', '123 Main St',
         'jane@example.com', '123456789A', 4.2);
 
 
