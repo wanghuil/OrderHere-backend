@@ -12,6 +12,7 @@ import java.util.List;
 @Data
 public class PlaceOrderDTO {
     private Integer userId;
+    private Integer restaurantId;
     private Integer tableNumber;
     private OrderType orderType;
     private OrderStatus orderStatus;

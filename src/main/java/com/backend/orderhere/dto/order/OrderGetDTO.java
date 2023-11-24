@@ -3,11 +3,13 @@ package com.backend.orderhere.dto.order;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 
 @Data
 public class OrderGetDTO {
 
   private Integer orderId;
+  private Integer restaurantId;
   private Integer userId;
   private String userName;
   private String orderStatus;
@@ -17,6 +19,7 @@ public class OrderGetDTO {
   private String address;
   private BigDecimal totalPrice;
   private String note;
+  private ZonedDateTime updatedTime;
 
 
 }

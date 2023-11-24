@@ -29,6 +29,10 @@ public class Order {
   @JoinColumn(name = "user_id")
   private User user;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "restaurant_id", nullable = false)
+  private Restaurant restaurant;
+
   @Enumerated(EnumType.STRING)
   @Type(PostgreSQLEnumType.class)
   @Column(name = "order_status", nullable = false, columnDefinition = "order_status")

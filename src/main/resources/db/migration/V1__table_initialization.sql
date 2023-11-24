@@ -3,7 +3,7 @@ EXTENSION IF NOT EXISTS pgcrypto;
 
 CREATE TYPE user_role AS ENUM ('customer', 'merchant', 'sys_admin');
 CREATE TYPE booking_status AS ENUM ('pending', 'confirmed', 'cancelled');
-CREATE TYPE order_status AS ENUM ('pending', 'preparing', 'finished', 'cancelled');
+CREATE TYPE order_status AS ENUM ('pending', 'preparing', 'finished', 'cancelled', 'in transit', 'delivered', 'delayed');
 CREATE TYPE order_type AS ENUM ('dine_in', 'delivery', 'pickup');
 CREATE TYPE week AS ENUM ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday');
 
@@ -111,6 +111,7 @@ CREATE TABLE orders
 (
     order_id     serial PRIMARY KEY       NOT NULL UNIQUE,
     user_id      integer REFERENCES users (user_id),
+    restaurant_id      integer REFERENCES restaurant (restaurant_id) NOT NULL,
     order_status order_status             NOT NULL,
     order_type   order_type               NOT NULL,
     table_number integer,
@@ -159,4 +160,3 @@ ALTER TABLE dish
     ADD COLUMN category_id integer REFERENCES category(category_id);
 
 ALTER TABLE dish DROP COLUMN IF EXISTS category;
-

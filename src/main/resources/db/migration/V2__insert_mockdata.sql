@@ -74,11 +74,11 @@ VALUES (1, 1, 4.5, 'Delicious dish!'),
        (1, 4, 4.7, 'Amazing presentation');
 
 
-INSERT INTO orders (user_id, order_status, order_type, table_number, pickup_time, address, total_price, discount, note)
-VALUES (1, 'pending', 'delivery', NULL, NULL, '123 Main St', 50.00, 0.00, 'No special instructions'),
-       (1, 'preparing', 'pickup', NULL, NULL, NULL, 35.50, 0.00, 'Extra ketchup packets'),
-       (1, 'finished', 'dine_in', 1, NULL, NULL, 75.25, 10.00, 'Call upon arrival'),
-       (1, 'cancelled', 'dine_in', NULL, NULL, NULL, 75.25, 10.00, 'Call upon arrival');
+INSERT INTO orders (user_id, restaurant_id, order_status, order_type, table_number, pickup_time, address, total_price, discount, note)
+VALUES (1, 1, 'pending', 'delivery', NULL, NULL, '123 Main St', 50.00, 0.00, 'No special instructions'),
+       (1, 1, 'preparing', 'pickup', NULL, NULL, NULL, 35.50, 0.00, 'Extra ketchup packets'),
+       (1, 2, 'finished', 'dine_in', 1, NULL, NULL, 75.25, 10.00, 'Call upon arrival'),
+       (1, 1, 'cancelled', 'dine_in', NULL, NULL, NULL, 75.25, 10.00, 'Call upon arrival');
 
 
 INSERT INTO booking (user_id, table_number, reservation_time, status, restaurant_id)
