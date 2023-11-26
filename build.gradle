@@ -67,6 +67,7 @@ dependencies {
     // other
     implementation 'com.sendgrid:sendgrid-java'
     implementation 'io.hypersistence:hypersistence-utils-hibernate-62:3.6.0'
+    implementation "com.stripe:stripe-java:20.103.0"
 
     // validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'

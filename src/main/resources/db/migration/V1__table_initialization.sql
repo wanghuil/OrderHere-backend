@@ -6,6 +6,7 @@ CREATE TYPE booking_status AS ENUM ('pending', 'confirmed', 'cancelled');
 CREATE TYPE order_status AS ENUM ('pending', 'preparing', 'finished', 'cancelled', 'in transit', 'delivered', 'delayed');
 CREATE TYPE order_type AS ENUM ('dine_in', 'delivery', 'pickup');
 CREATE TYPE week AS ENUM ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday');
+CREATE TYPE payment_status AS ENUM ('unpaid', 'paid', 'failed');
 
 CREATE TABLE users
 (
@@ -160,3 +161,16 @@ ALTER TABLE dish
     ADD COLUMN category_id integer REFERENCES category(category_id);
 
 ALTER TABLE dish DROP COLUMN IF EXISTS category;
+
+CREATE TABLE payments
+(
+    payment_id     serial PRIMARY KEY          NOT NULL UNIQUE,
+    order_id       integer REFERENCES orders (order_id),
+    payment_status payment_status              NOT NULL,
+    payment_method varchar(255),
+    stripe_payment_id varchar(255)             NOT NULL ,
+    amount         decimal(10, 2)              NOT NULL,
+    currency       varchar(3)                  NOT NULL,
+    created_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
