@@ -1,10 +1,12 @@
 package com.backend.orderhere.service;
 
 import com.backend.orderhere.dto.UserProfileUpdateDTO;
+import com.backend.orderhere.dto.user.OauthProviderLoginSessionDTO;
 import com.backend.orderhere.dto.user.UserSignUpRequestDTO;
 import com.backend.orderhere.dto.user.UserSignUpResponseDTO;
 import com.backend.orderhere.exception.DataIntegrityException;
 import com.backend.orderhere.exception.ResourceNotFoundException;
+import com.backend.orderhere.filter.JwtUtil;
 import com.backend.orderhere.mapper.UserMapper;
 import com.backend.orderhere.model.User;
 import com.backend.orderhere.model.enums.UserRole;
@@ -13,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -75,7 +79,6 @@ public class UserService {
 
     //Create BCryptPassword
     String hashedPassword = encoder.encode(userSignUpRequestDTO.getPassword());
-
     //create user
     User user = User.builder()
         .username(userSignUpRequestDTO.getUserName())
@@ -87,11 +90,61 @@ public class UserService {
         .avatarUrl(INIT_AVATAR_URL)
         .userRole(UserRole.customer)
         .build();
-
     //create user and map user to response form
     User createdUser = userRepository.save(user);
-
     return userMapper.userToUserSignUpResponseDTO(createdUser);
+  }
+
+  public String createUser(OauthProviderLoginSessionDTO sessionData, String openId, String provider) {
+
+    //Create BCryptPassword by userEmail
+    String hashedPassword = encoder.encode(sessionData.getUsername() + sessionData.getEmail());
+    //create user
+    if(provider.equals("google")){
+      User user = User.builder()
+          .username(sessionData.getUsername())
+          .firstname(sessionData.getUsername())
+          .lastname(" ")
+          .email(sessionData.getEmail())
+          .password(hashedPassword)
+          .point(INIT_REWARD_POINT)
+          .avatarUrl(sessionData.getAvatarUrl())
+          .userRole(UserRole.customer)
+          .googleOpenId(openId)
+          .build();
+      User createdUser = userRepository.save(user);
+      return JwtUtil.generateToken(createdUser);
+    }else {
+      User user = User.builder()
+          .username(sessionData.getUsername())
+          .firstname(sessionData.getUsername())
+          .lastname(" ")
+          .email(sessionData.getEmail())
+          .password(hashedPassword)
+          .point(INIT_REWARD_POINT)
+          .avatarUrl(sessionData.getAvatarUrl())
+          .userRole(UserRole.customer)
+          .facebookOpenId(openId)
+          .build();
+      User createdUser = userRepository.save(user);
+      return JwtUtil.generateToken(createdUser);
+    }
+  }
+
+
+  public String checkUserOpenId(String openId, String provider) {
+    if(provider.equals("google")){
+      Optional<User> existUser = userRepository.findByGoogleOpenId(openId);
+      if(existUser.isPresent()){
+        return JwtUtil.generateToken(existUser.get());
+      }
+    }else if(provider.equals("facebook")){
+      Optional<User> existUser = userRepository.findByFacebookOpenId(openId);
+      if(existUser.isPresent()){
+        return JwtUtil.generateToken(existUser.get());
+      }
+    }
+    return null;
   }
 }
 

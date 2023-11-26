@@ -1,10 +1,7 @@
 package com.backend.orderhere.controller.v1;
 
 import com.backend.orderhere.dto.UserProfileUpdateDTO;
-import com.backend.orderhere.dto.user.ResetPasswordDTO;
-import com.backend.orderhere.dto.user.UserForgetPasswordRequestDTO;
-import com.backend.orderhere.dto.user.UserSignUpRequestDTO;
-import com.backend.orderhere.dto.user.UserSignUpResponseDTO;
+import com.backend.orderhere.dto.user.*;
 import com.backend.orderhere.model.User;
 import com.backend.orderhere.service.EmailService;
 import com.backend.orderhere.service.TokenService;
@@ -42,6 +39,23 @@ public class UserController {
     UserSignUpResponseDTO user = userService.createUser(userSignUpRequestDTO);
     return new ResponseEntity<UserSignUpResponseDTO>(user, HttpStatus.OK);
   }
+
+  /*
+  * Login or Sign up by using google openId
+  * */
+  @PostMapping("/login/{provider}/{openId}")
+  public ResponseEntity<String> userLogin(@PathVariable String provider,
+                                          @PathVariable String openId,
+                                          @RequestBody OauthProviderLoginSessionDTO token) {
+    String jwtTokenResponse = userService.checkUserOpenId(openId, provider);
+    if(jwtTokenResponse == null){
+      String newUserToken = userService.createUser(token, openId, provider);
+      return new ResponseEntity<>(newUserToken, HttpStatus.OK);
+    }else{
+      return new ResponseEntity<>(jwtTokenResponse, HttpStatus.OK);
+    }
+  }
+
 
   @PostMapping("/forget-password")
   public ResponseEntity<String> forgotPassword(@RequestBody UserForgetPasswordRequestDTO userForgetPasswordRequestDTO) {

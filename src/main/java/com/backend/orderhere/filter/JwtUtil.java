@@ -1,6 +1,9 @@
 package com.backend.orderhere.filter;
 
+import com.backend.orderhere.auth.ApplicationUserDetails;
 import com.backend.orderhere.config.StaticConfig;
+import com.backend.orderhere.model.User;
+import com.backend.orderhere.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -16,10 +19,26 @@ public class JwtUtil {
 
   //generate Jwt token based on Authentication(username and password)
   public static String generateToken(Authentication authResult) {
+    ApplicationUserDetails applicationUserDetails = (ApplicationUserDetails) authResult.getPrincipal();
     return Jwts.builder()
         .setSubject(authResult.getName())
         .claim("authorities", authResult.getAuthorities())
-        .claim("code", "EmptyString")
+        .claim("userId", applicationUserDetails.getUserId())
+        .claim("avatarURL", applicationUserDetails.getUserAvatarURL())
+        .claim("userName", applicationUserDetails.getUserName())
+        .setIssuedAt(new Date())
+        .setExpiration(Date.from(Instant.now().plusMillis(24 * 60 * 60 * 1000))) //24 hours expiration
+        .signWith(Keys.hmacShaKeyFor(StaticConfig.JwtSecretKey.getBytes()))
+        .compact();
+  }
+
+  //generate Jwt token based on Exist user
+  public static String generateToken(User user){
+    return Jwts.builder().setSubject(user.getEmail())
+        .claim("authorities", user.getUserRole())
+        .claim("userId", user.getUserId())
+        .claim("avatarURL", user.getAvatarUrl())
+        .claim("userName", user.getUsername())
         .setIssuedAt(new Date())
         .setExpiration(Date.from(Instant.now().plusMillis(24 * 60 * 60 * 1000))) //24 hours expiration
         .signWith(Keys.hmacShaKeyFor(StaticConfig.JwtSecretKey.getBytes()))

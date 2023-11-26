@@ -19,7 +19,7 @@ public class ApplicationUserDaoImpl implements ApplicationUserDao {
   private final UserRepository userRepository;
 
   @Override
-  public Optional<ApplicationUserDetails> fetchUserbyUserEmail(String email) {
+  public Optional<ApplicationUserDetails> fetchUserByUserEmail(String email) {
 
     //retrieve user details from database
     User user = userRepository.findByEmail(email).
@@ -28,13 +28,16 @@ public class ApplicationUserDaoImpl implements ApplicationUserDao {
 
     //create new applicationUserDetail and
     ApplicationUserDetails applicationUserDetails = new ApplicationUserDetails(
-        user.getUsername(),
+        user.getEmail(),
         user.getPassword(),
         getGrantedAuthorities(user.getUserRole()),
         true,
         true,
         true,
-        true
+        true,
+        user.getUserId(),
+        user.getAvatarUrl(),
+        user.getUsername()
     );
     return Optional.of(applicationUserDetails);
   }

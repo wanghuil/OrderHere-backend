@@ -10,47 +10,61 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class ApplicationUserDetails implements UserDetails {
 
-  private final String email;
-  private final String password;
-  private final Set<? extends GrantedAuthority> grantedAuthorities;
-  private final boolean isAccountNonExpired;
-  private final boolean isAccountNonLocked;
-  private final boolean isCredentialsNonExpired;
-  private final boolean isEnabled;
+    private final String email;
+    private final String password;
+    private final Set<? extends GrantedAuthority> grantedAuthorities;
+    private final boolean isAccountNonExpired;
+    private final boolean isAccountNonLocked;
+    private final boolean isCredentialsNonExpired;
+    private final boolean isEnabled;
+    private final Integer userId;
+    private final String userAvatarURL;
+    private final String userName;
 
 
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return grantedAuthorities;
-  }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return grantedAuthorities;
+    }
 
-  @Override
-  public String getPassword() {
-    return password;
-  }
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
-  @Override
-  public String getUsername() {
-    return email;
-  }
+    @Override
+    public String getUsername() {
+        return email;
+    }
 
-  @Override
-  public boolean isAccountNonExpired() {
-    return isAccountNonExpired;
-  }
+    @Override
+    public boolean isAccountNonExpired() {
+        return isAccountNonExpired;
+    }
 
-  @Override
-  public boolean isAccountNonLocked() {
-    return isAccountNonLocked;
-  }
+    @Override
+    public boolean isAccountNonLocked() {
+        return isAccountNonLocked;
+    }
 
-  @Override
-  public boolean isCredentialsNonExpired() {
-    return isCredentialsNonExpired;
-  }
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return isCredentialsNonExpired;
+    }
 
-  @Override
-  public boolean isEnabled() {
-    return isEnabled;
-  }
+    @Override
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public String getUserAvatarURL() {
+        return userAvatarURL;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
 }

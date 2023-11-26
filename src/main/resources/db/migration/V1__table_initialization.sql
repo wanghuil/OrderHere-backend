@@ -10,17 +10,19 @@ CREATE TYPE payment_status AS ENUM ('unpaid', 'paid', 'failed');
 
 CREATE TABLE users
 (
-    user_id      serial PRIMARY KEY       NOT NULL UNIQUE,
-    username     varchar(255)             NOT NULL UNIQUE,
-    firstname    varchar(255)             NOT NULL,
-    lastname     varchar(255)             NOT NULL,
-    password     varchar(255)             NOT NULL,
-    user_email   varchar(255)             NOT NULL UNIQUE,
-    avatar_url   varchar(255)             NOT NULL,
-    point        integer,
-    user_role    user_role                NOT NULL,
-    created_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+    user_id          serial PRIMARY KEY       NOT NULL UNIQUE,
+    username         varchar(255)             NOT NULL UNIQUE,
+    firstname        varchar(255)             NOT NULL,
+    lastname         varchar(255)             NOT NULL,
+    password         varchar(255)             NOT NULL,
+    user_email       varchar(255)             NOT NULL UNIQUE,
+    avatar_url       varchar(255)             NOT NULL,
+    point            integer,
+    user_role        user_role                NOT NULL,
+    created_time     TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_time     TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    google_open_id   varchar(255)                      UNIQUE,
+    facebook_open_id varchar(255)                      UNIQUE
 );
 
 CREATE TABLE user_address
@@ -157,11 +159,6 @@ create TABLE category
     updated_time       TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-ALTER TABLE dish
-    ADD COLUMN category_id integer REFERENCES category(category_id);
-
-ALTER TABLE dish DROP COLUMN IF EXISTS category;
-
 CREATE TABLE payments
 (
     payment_id     serial PRIMARY KEY          NOT NULL UNIQUE,
@@ -174,3 +171,9 @@ CREATE TABLE payments
     created_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+ALTER TABLE dish
+    ADD COLUMN category_id integer REFERENCES category(category_id);
+
+ALTER TABLE dish DROP COLUMN IF EXISTS category;
+

@@ -59,5 +59,11 @@ public class User {
   @Column(name = "updated_time", nullable = false)
   private ZonedDateTime updatedTime;
 
+  @Column(name = "google_open_id", unique = true)
+  private String googleOpenId;
+
+  @Column(name = "facebook_open_id", unique = true)
+  private String facebookOpenId;
+
 
 }

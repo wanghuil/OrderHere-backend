@@ -15,7 +15,7 @@ public class ApplicationUserService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String userEmail) {
-    return applicationUserDao.fetchUserbyUserEmail(userEmail)
+    return applicationUserDao.fetchUserByUserEmail(userEmail)
         .orElseThrow(
             () -> new ResourceNotFoundException("User detail not exist")
         );
