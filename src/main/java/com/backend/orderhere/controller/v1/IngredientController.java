@@ -33,11 +33,11 @@ public class IngredientController {
         return linkIngredientDishService.createLink(postIngredientDTO);
     }
 
-    // @GetMapping("dish/{dishID}")
-    // public ResponseEntity<List<GetIngredientDTO>> findByDishID(@PathVariable Integer dishID) {
-    //     List<GetIngredientDTO> dtoList = linkIngredientDishService.findGetIngredientDTOByDishID(dishID);
-    //     return ResponseEntity.ok(dtoList);
-    // }
+    @GetMapping("dish/{dishID}")
+    public ResponseEntity<List<GetIngredientDTO>> findByDishID(@PathVariable Integer dishID) {
+        List<GetIngredientDTO> dtoList = linkIngredientDishService.findGetIngredientDTOByDishID(dishID);
+        return ResponseEntity.ok(dtoList);
+    }
 
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteLink(@RequestBody DeleteIngredientDTO deleteIngredientDTO) {
@@ -49,5 +49,10 @@ public class IngredientController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
+    }
+
+    @GetMapping("/{id}")
+    public Ingredient getIngredientById(@PathVariable Integer id) {
+        return ingredientService.getIngredientById(id);
     }
 }

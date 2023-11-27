@@ -3,7 +3,7 @@ package com.backend.orderhere.service;
 import com.backend.orderhere.dto.ingredient.DeleteIngredientDTO;
 import com.backend.orderhere.dto.ingredient.GetIngredientDTO;
 import com.backend.orderhere.dto.ingredient.PostIngredientDTO;
-// import com.backend.orderhere.mapper.LinkIngredientDishMapper;
+import com.backend.orderhere.mapper.LinkIngredientDishMapper;
 import com.backend.orderhere.model.Dish;
 import com.backend.orderhere.model.Ingredient;
 import com.backend.orderhere.model.LinkIngredientDish;
@@ -26,8 +26,8 @@ public class LinkIngredientDishService {
     @Autowired
     private DishRepository dishRepository;
 
-    // @Autowired
-    // private LinkIngredientDishMapper linkIngredientDishMapper;
+    @Autowired
+    private LinkIngredientDishMapper linkIngredientDishMapper;
 
     public LinkIngredientDish createLink(PostIngredientDTO addIngredientDTO) {
         Dish dish = dishRepository.findById(addIngredientDTO.getDishId()).orElseThrow(() -> new EntityNotFoundException("Dish not found"));
@@ -47,11 +47,11 @@ public class LinkIngredientDishService {
         return linkIngredientDishRepository.save(link);
     }
 
-    // public List<GetIngredientDTO> findGetIngredientDTOByDishID(Integer dishID) {
-    //     Dish dish = dishRepository.findById(dishID).orElseThrow(() -> new EntityNotFoundException("Dish not found"));
-    //     List<LinkIngredientDish> links = linkIngredientDishRepository.findByDish(dish);
-    //     return links.stream().map(linkIngredientDishMapper::toDto).collect(Collectors.toList());
-    // }
+    public List<GetIngredientDTO> findGetIngredientDTOByDishID(Integer dishID) {
+        Dish dish = dishRepository.findById(dishID).orElseThrow(() -> new EntityNotFoundException("Dish not found"));
+        List<LinkIngredientDish> links = linkIngredientDishRepository.findByDish(dish);
+        return links.stream().map(linkIngredientDishMapper::toDto).collect(Collectors.toList());
+    }
 
     public void deleteById(DeleteIngredientDTO deleteIngredientDTO) {
         Dish dish = dishRepository.findById(deleteIngredientDTO.getDishID()).orElseThrow(() -> new EntityNotFoundException("Dish not found"));

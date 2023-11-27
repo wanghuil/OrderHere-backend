@@ -5,10 +5,10 @@ import com.backend.orderhere.model.LinkIngredientDish;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-// @Mapper(componentModel = "spring")
-// public interface LinkIngredientDishMapper {
-//     @Mapping(target = "dishId", source = "dish.dishId")
-//     @Mapping(target = "ingredientId", source = "ingredient.ingredientId")
-//     GetIngredientDTO toDto(LinkIngredientDish linkIngredientDish);
+@Mapper(componentModel = "spring")
+public interface LinkIngredientDishMapper {
+    @Mapping(target = "dishId", source = "dish.dishId")
+    @Mapping(target = "ingredientId", source = "ingredient.ingredientId")
+    GetIngredientDTO toDto(LinkIngredientDish linkIngredientDish);
 
-// }
+}
