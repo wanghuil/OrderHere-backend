@@ -7,6 +7,7 @@ import com.backend.orderhere.filter.JwtVerifyFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -23,8 +24,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -44,9 +43,11 @@ public class SecurityConfig {
         .sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .addFilter(new JwtCredentialsAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))))
         .addFilterAfter(new JwtVerifyFilter(), JwtCredentialsAuthenticationFilter.class)
-        .authorizeHttpRequests(auth ->
-            auth.requestMatchers(StaticConfig.ignoreUrl).permitAll()
-                .anyRequest().authenticated());
+            .authorizeHttpRequests(auth -> {
+              auth.requestMatchers(StaticConfig.ignoreUrl).permitAll();
+              auth.requestMatchers(HttpMethod.GET, StaticConfig.getOnlyUrl).permitAll();
+              auth.anyRequest().authenticated();
+            });
     return http.build();
   }
 

@@ -50,7 +50,7 @@ public class JwtCredentialsAuthenticationFilter extends UsernamePasswordAuthenti
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(
-                "{\"token\":\"" +  token + "\"}"
+                "{\"token\":\"" + StaticConfig.JwtPrefix +  token + "\"}"
         );
     }
 

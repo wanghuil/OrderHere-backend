@@ -6,12 +6,15 @@ public class StaticConfig {
             "/v3/api-docs/**",
             "/swagger-ui/**",
             // -- API
+            "/v1/public/users/**",
+
+    };
+
+    public final static String [] getOnlyUrl = new String[]{
             "/v1/public/dish/**",
             "/v1/public/restaurants/**",
-            "/v1/public/users/**",
             "/v1/public/ingredients/**",
             "/v1/public/category/**",
-
     };
 
     // JWT

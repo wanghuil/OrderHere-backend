@@ -1,5 +1,6 @@
 package com.backend.orderhere.controller.v1;
 
+import com.backend.orderhere.config.StaticConfig;
 import com.backend.orderhere.dto.UserProfileUpdateDTO;
 import com.backend.orderhere.dto.user.*;
 import com.backend.orderhere.model.User;
@@ -50,9 +51,9 @@ public class UserController {
     String jwtTokenResponse = userService.checkUserOpenId(openId, provider);
     if(jwtTokenResponse == null){
       String newUserToken = userService.createUser(token, openId, provider);
-      return new ResponseEntity<>(newUserToken, HttpStatus.OK);
+      return new ResponseEntity<>( StaticConfig.JwtPrefix + newUserToken, HttpStatus.OK);
     }else{
-      return new ResponseEntity<>(jwtTokenResponse, HttpStatus.OK);
+      return new ResponseEntity<>( StaticConfig.JwtPrefix + jwtTokenResponse, HttpStatus.OK);
     }
   }
 
