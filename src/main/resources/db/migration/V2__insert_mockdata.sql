@@ -37,7 +37,16 @@ VALUES (1, 'monday', '09:00 AM', '05:00 PM'),
 
 
 INSERT INTO category (restaurant_id, category_name)
-VALUES (1, 'Main Dishes');
+VALUES (1, 'Main Dishes'),
+       (1, 'Soups'),
+       (1, 'Salads'),
+       (1, 'Desserts'),
+       (1, 'Beverages'),
+       (1, 'Appetizers'),
+       (1, 'Side Dishes'),
+       (1, 'Breakfast'),
+       (1, 'Lunch'),
+       (1, 'Dinner');
 
 
 INSERT INTO dish (restaurant_id, dish_name, description, price, image_url, rating, availability, category_id)
@@ -74,7 +83,8 @@ VALUES (1, 1, 4.5, 'Delicious dish!'),
        (1, 4, 4.7, 'Amazing presentation');
 
 
-INSERT INTO orders (user_id, restaurant_id, order_status, order_type, table_number, pickup_time, address, total_price, discount, note)
+INSERT INTO orders (user_id, restaurant_id, order_status, order_type, table_number, pickup_time, address, total_price,
+                    discount, note)
 VALUES (1, 1, 'pending', 'delivery', NULL, NULL, '123 Main St', 50.00, 0.00, 'No special instructions'),
        (1, 1, 'preparing', 'pickup', NULL, NULL, NULL, 35.50, 0.00, 'Extra ketchup packets'),
        (1, 2, 'finished', 'dine_in', 1, NULL, NULL, 75.25, 10.00, 'Call upon arrival'),
