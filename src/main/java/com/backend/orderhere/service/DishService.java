@@ -10,6 +10,7 @@ import com.backend.orderhere.service.enums.DishSort;
 import com.backend.orderhere.util.PageableUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -25,6 +26,9 @@ import java.util.List;
 public class DishService {
   private final DishRepository dishRepository;
   private final DishMapper dishMapper;
+
+  @Autowired
+  private MinioService minioService;
 
   public PagingDto<List<DishGetDto>> getDishPageByRestaurantId(Integer restaurantId,
                                                                int page,
@@ -58,11 +62,19 @@ public class DishService {
   @Transactional
   public void createDish(DishCreateDto dishCreateDto) {
     try {
-        Dish dish = dishMapper.dishCreateDtoToDish(dishCreateDto);
-        dishRepository.save(dish);
-        } catch (Exception e) {
-        log.error("Error occurred while creating dish", e);
-        throw e;
+      String bucketName = "my-bucket";
+      minioService.createBucket(bucketName);
+
+      if (dishCreateDto.getImageFile() != null && !dishCreateDto.getImageFile().isEmpty()) {
+        String imageUrl = minioService.uploadFile(dishCreateDto.getImageFile(), bucketName);
+        dishCreateDto.setImageUrl(imageUrl);
+      }
+
+      Dish dish = dishMapper.dishCreateDtoToDish(dishCreateDto);
+      dishRepository.save(dish);
+
+    } catch (Exception e) {
+      log.error("Error occurred while creating dish", e);
     }
   }
 }

@@ -8,6 +8,7 @@ import com.backend.orderhere.service.enums.DishSort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,8 +47,8 @@ public class DishController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
-    public void createDish(@Valid @RequestBody DishCreateDto dishCreateDto) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void createDish(@Valid @ModelAttribute DishCreateDto dishCreateDto) {
         dishService.createDish(dishCreateDto);
     }
 }

@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.security.core.parameters.P;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 
@@ -20,10 +21,8 @@ public class DishCreateDto {
 
     private BigDecimal price;
 
-    @Pattern(regexp = "^(http(s?):\\/\\/)[^\\s]+$", message = "Field must be a valid URL")
-    @Size(max = 255, message = "Field must be less than 255 characters")
     private String imageUrl;
-
+    private MultipartFile imageFile;
     private Integer restaurantId;
     private Boolean availability;
 }

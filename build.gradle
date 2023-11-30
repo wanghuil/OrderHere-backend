@@ -85,6 +85,10 @@ dependencies {
 
     // development
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    //minIO
+    implementation 'io.minio:minio:8.5.2'
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
 }
 
 tasks.named('test') {
