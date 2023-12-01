@@ -1,7 +1,7 @@
 INSERT INTO users (username, firstname, lastname, password, user_email, avatar_url, point, user_role)
-VALUES ('user1', 'user', 'user', '$2a$10$.wLQ2xMfPLjfhCG6cnw.PupQunIZhv6F09ChvsxwvJgnAT.JZUtxq', 'user@user.com',
+VALUES ('user1', 'user', 'user', '$2a$10$.wLQ2xMfPLjfhCG6cnw.PupQunIZhv6F09ChvsxwvJgnAT.JZUtxq', 'admin@email.com',
         'https://freepngimg.com/thumb/google/66726-customer-account-google-service-button-search-logo.png',
-        100, 'customer');
+        100, 'sys_admin');
 -- password:   123456
 
 

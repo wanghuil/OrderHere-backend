@@ -9,20 +9,22 @@ import com.backend.orderhere.model.LinkIngredientDish;
 import com.backend.orderhere.service.IngredientService;
 import com.backend.orderhere.service.LinkIngredientDishService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/v1/public/ingredients")
 public class IngredientController {
-    @Autowired
-    private IngredientService ingredientService;
-    @Autowired
-    private LinkIngredientDishService linkIngredientDishService;
+
+    private final IngredientService ingredientService;
+    private final LinkIngredientDishService linkIngredientDishService;
 
     @GetMapping
     public List<Ingredient> getAllIngredients() {
