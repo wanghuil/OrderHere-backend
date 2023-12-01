@@ -10,6 +10,7 @@ import com.backend.orderhere.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -91,5 +92,21 @@ public class UserController {
     } else {
       return new ResponseEntity<>("Password reset failed.", HttpStatus.BAD_REQUEST);
     }
+  }
+
+  @GetMapping("/profile")
+  public ResponseEntity<?> getUserProfile(@RequestHeader(name = "Authorization") String authorizationHeader) {
+    try {
+      return new ResponseEntity<>(userService.getUserProfile(authorizationHeader), HttpStatus.OK);
+    }
+    catch (Exception e) {
+      return new ResponseEntity<>(e.getCause(), HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @PutMapping("/profile")
+  public ResponseEntity<UserProfileUpdateDTO> updateUserProfileWithToken(@RequestHeader(name = "Authorization") String authorizationHeader, @RequestBody UserProfileUpdateDTO dto) {
+    UserProfileUpdateDTO updatedUserProfile = userService.updateUserProfileWithToken(authorizationHeader, dto);
+    return new ResponseEntity<>(updatedUserProfile, HttpStatus.OK);
   }
 }

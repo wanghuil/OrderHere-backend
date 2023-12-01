@@ -2,6 +2,7 @@ package com.backend.orderhere.service;
 
 import com.backend.orderhere.dto.UserProfileUpdateDTO;
 import com.backend.orderhere.dto.user.OauthProviderLoginSessionDTO;
+import com.backend.orderhere.dto.user.UserGetDto;
 import com.backend.orderhere.dto.user.UserSignUpRequestDTO;
 import com.backend.orderhere.dto.user.UserSignUpResponseDTO;
 import com.backend.orderhere.exception.DataIntegrityException;
@@ -146,5 +147,30 @@ public class UserService {
     }
     return null;
   }
+
+  public UserGetDto getUserProfile(String token) {
+    Integer userId = JwtUtil.getUserIdFromToken(token);
+    User user = userRepository.findByUserId(userId).orElseThrow();
+    UserGetDto userGetDto = userMapper.userToUserGetDto(user);
+    return userGetDto;
+  }
+
+  public UserProfileUpdateDTO updateUserProfileWithToken(String token, UserProfileUpdateDTO dto) {
+    User user = userRepository.findById(JwtUtil.getUserIdFromToken(token))
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    try {
+      userMapper.updateUserFromUserProfileUpdateDTO(dto, user);
+      User updatedUser = userRepository.save(user);
+
+      return userMapper.userToUserProfileUpdateDTO(updatedUser);
+    } catch (DataIntegrityViolationException e) {
+      throw new DataIntegrityException("Username already exists");
+    } catch (Exception e) {
+      throw new RuntimeException("Something went wrong");
+    }
+  }
 }
+
+
+
 

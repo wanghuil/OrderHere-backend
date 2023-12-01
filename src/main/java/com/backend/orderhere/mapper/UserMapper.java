@@ -1,6 +1,7 @@
 package com.backend.orderhere.mapper;
 
 import com.backend.orderhere.dto.UserProfileUpdateDTO;
+import com.backend.orderhere.dto.user.UserGetDto;
 import com.backend.orderhere.dto.user.UserSignUpResponseDTO;
 import com.backend.orderhere.model.User;
 import org.mapstruct.Mapper;
@@ -14,5 +15,7 @@ public interface UserMapper {
   UserProfileUpdateDTO userToUserProfileUpdateDTO(User updatedUser);
 
   UserSignUpResponseDTO userToUserSignUpResponseDTO(User createdUser);
+
+  UserGetDto userToUserGetDto(User user);
 
 }

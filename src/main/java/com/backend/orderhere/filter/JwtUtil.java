@@ -3,19 +3,19 @@ package com.backend.orderhere.filter;
 import com.backend.orderhere.auth.ApplicationUserDetails;
 import com.backend.orderhere.config.StaticConfig;
 import com.backend.orderhere.model.User;
-import com.backend.orderhere.model.enums.UserRole;
-import com.backend.orderhere.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 
 import java.time.Instant;
 import java.util.*;
 
 @RequiredArgsConstructor
+@Slf4j
 public class JwtUtil {
 
   //generate Jwt token based on Authentication(username and password)
@@ -82,5 +82,9 @@ public class JwtUtil {
     }
   }
 
-
+  public static Integer getUserIdFromToken(String authorizationHeader) {
+    String token = authorizationHeader.substring("Bearer ".length());
+    Claims claims = Jwts.parserBuilder().setSigningKey(StaticConfig.JwtSecretKey.getBytes()).build().parseClaimsJws(token).getBody();
+    return claims.get("userId", Integer.class);
+  }
 }
