@@ -29,7 +29,7 @@ public class LinkIngredientDishService {
     @Autowired
     private LinkIngredientDishMapper linkIngredientDishMapper;
 
-    public LinkIngredientDish createLink(PostIngredientDTO addIngredientDTO) {
+    public Integer createLink(PostIngredientDTO addIngredientDTO) {
         Dish dish = dishRepository.findById(addIngredientDTO.getDishId()).orElseThrow(() -> new EntityNotFoundException("Dish not found"));
         Ingredient ingredient = ingredientRepository.findByName(addIngredientDTO.getName()).orElseGet(() -> {
             Ingredient newIngredient = new Ingredient();
@@ -43,8 +43,9 @@ public class LinkIngredientDishService {
         link.setIngredient(ingredient);
         link.setQuantityValue(addIngredientDTO.getQuantityValue());
         link.setQuantityUnit(addIngredientDTO.getUnit());
+        linkIngredientDishRepository.save(link);
 
-        return linkIngredientDishRepository.save(link);
+        return ingredient.getIngredientId();
     }
 
     public List<GetIngredientDTO> findGetIngredientDTOByDishID(Integer dishID) {
@@ -54,8 +55,8 @@ public class LinkIngredientDishService {
     }
 
     public void deleteById(DeleteIngredientDTO deleteIngredientDTO) {
-        Dish dish = dishRepository.findById(deleteIngredientDTO.getDishID()).orElseThrow(() -> new EntityNotFoundException("Dish not found"));
-        Ingredient ingredient = ingredientRepository.findById(deleteIngredientDTO.getIngredientID()).orElseThrow(() -> new EntityNotFoundException("Ingredient not found"));
+        Dish dish = dishRepository.findById(deleteIngredientDTO.getDishId()).orElseThrow(() -> new EntityNotFoundException("Dish not found"));
+        Ingredient ingredient = ingredientRepository.findById(deleteIngredientDTO.getIngredientId()).orElseThrow(() -> new EntityNotFoundException("Ingredient not found"));
         LinkIngredientDish link = (LinkIngredientDish) linkIngredientDishRepository.findByDishAndIngredient(dish, ingredient).orElseThrow(() -> new EntityNotFoundException("Link not found"));
         linkIngredientDishRepository.delete(link);
     }

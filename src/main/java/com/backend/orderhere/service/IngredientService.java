@@ -1,7 +1,9 @@
 package com.backend.orderhere.service;
 
+import com.backend.orderhere.dto.ingredient.UpdateIngredientDTO;
 import com.backend.orderhere.model.Ingredient;
 import com.backend.orderhere.repository.IngredientRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,13 @@ public class IngredientService {
 
   public Ingredient getIngredientById(Integer id) {
     return ingredientRepository.findById(id).orElse(null);
+  }
+
+  public Ingredient updateIngredientName(UpdateIngredientDTO updateIngredientDTO) {
+    Ingredient ingredient = ingredientRepository.findById(updateIngredientDTO.getIngredientId())
+            .orElseThrow(() -> new EntityNotFoundException("Ingredient not found"));
+    ingredient.setName(updateIngredientDTO.getName());
+    return ingredientRepository.save(ingredient);
   }
 
   public Ingredient updateIngredient(Ingredient ingredient) {
