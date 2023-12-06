@@ -1,6 +1,6 @@
 package com.backend.orderhere.mapper;
 
-import com.backend.orderhere.dto.UserProfileUpdateDTO;
+import com.backend.orderhere.dto.user.UserProfileUpdateDTO;
 import com.backend.orderhere.dto.user.UserGetDto;
 import com.backend.orderhere.dto.user.UserSignUpResponseDTO;
 import com.backend.orderhere.model.User;

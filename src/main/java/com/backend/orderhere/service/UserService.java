@@ -1,10 +1,6 @@
 package com.backend.orderhere.service;
 
-import com.backend.orderhere.dto.UserProfileUpdateDTO;
-import com.backend.orderhere.dto.user.OauthProviderLoginSessionDTO;
-import com.backend.orderhere.dto.user.UserGetDto;
-import com.backend.orderhere.dto.user.UserSignUpRequestDTO;
-import com.backend.orderhere.dto.user.UserSignUpResponseDTO;
+import com.backend.orderhere.dto.user.*;
 import com.backend.orderhere.exception.DataIntegrityException;
 import com.backend.orderhere.exception.ResourceNotFoundException;
 import com.backend.orderhere.filter.JwtUtil;
@@ -12,11 +8,16 @@ import com.backend.orderhere.mapper.UserMapper;
 import com.backend.orderhere.model.User;
 import com.backend.orderhere.model.enums.UserRole;
 import com.backend.orderhere.repository.UserRepository;
+import io.minio.errors.MinioException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 @Service
@@ -31,12 +32,14 @@ public class UserService {
   private final UserMapper userMapper;
   private final TokenService tokenService;
   private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+  private final MinioService minioService;
 
   @Autowired
-  public UserService(UserRepository userRepository, UserMapper userMapper, TokenService tokenService) {
+  public UserService(UserRepository userRepository, UserMapper userMapper, TokenService tokenService, MinioService minioService) {
     this.userRepository = userRepository;
     this.userMapper = userMapper;
     this.tokenService = tokenService;
+    this.minioService = minioService;
   }
 
   public UserProfileUpdateDTO updateUserProfile(Integer userId, UserProfileUpdateDTO dto) {
@@ -155,6 +158,7 @@ public class UserService {
     return userGetDto;
   }
 
+  @Transactional
   public UserProfileUpdateDTO updateUserProfileWithToken(String token, UserProfileUpdateDTO dto) {
     User user = userRepository.findById(JwtUtil.getUserIdFromToken(token))
             .orElseThrow(() -> new ResourceNotFoundException("User not found"));
@@ -168,6 +172,21 @@ public class UserService {
     } catch (Exception e) {
       throw new RuntimeException("Something went wrong");
     }
+  }
+
+  @Transactional
+  public String updateUserAvatar(String token, UserAvatarUpdateDto userAvatarUpdateDto) throws Exception {
+    System.out.println("got here");
+    User user = userRepository.findById(JwtUtil.getUserIdFromToken(token))
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+    String bucketName = "my-bucket";
+    minioService.createBucket(bucketName);
+    String imageUrl = minioService.uploadFile(userAvatarUpdateDto.getImageFile(), bucketName);
+    System.out.println(imageUrl);
+    user.setAvatarUrl(imageUrl);
+    User updatedUser = userRepository.save(user);
+    return updatedUser.getAvatarUrl();
   }
 }
 
