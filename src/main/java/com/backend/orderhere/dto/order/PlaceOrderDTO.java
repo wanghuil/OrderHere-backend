@@ -11,7 +11,7 @@ import java.util.List;
 
 @Data
 public class PlaceOrderDTO {
-    private Integer userId;
+//    private Integer userId;
     private Integer restaurantId;
     private Integer tableNumber;
     private OrderType orderType;
@@ -21,5 +21,7 @@ public class PlaceOrderDTO {
     private Double totalPrice;
     private String note;
     private String Address;
+    private String phone;
+    private Integer numberOfPeople;
     private ZonedDateTime pickupTime;
 }

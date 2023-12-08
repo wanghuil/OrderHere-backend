@@ -46,6 +46,9 @@ public class Order {
   @Column(name = "table_number")
   private Integer tableNumber;
 
+  @Column(name = "number_of_people")
+  private Integer numberOfPeople;
+
   @Column(name = "pickup_time")
   private ZonedDateTime pickupTime;
 
@@ -60,6 +63,9 @@ public class Order {
 
   @Column(name = "note")
   private String note;
+
+  @Column(name = "phone")
+  private String phone;
 
   @CreationTimestamp
   @Column(name = "created_time", nullable = false)

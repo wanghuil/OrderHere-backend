@@ -55,8 +55,8 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Order> placeOrder(@RequestBody PlaceOrderDTO placeOrderDTO) {
-        Order order = orderService.PlaceOrder(placeOrderDTO);
+    public ResponseEntity<Order> placeOrder(@RequestHeader(name = "Authorization") String authorizationHeader, @RequestBody PlaceOrderDTO placeOrderDTO) {
+        Order order = orderService.PlaceOrder(authorizationHeader, placeOrderDTO);
         return ResponseEntity.ok(order);
     }
 }

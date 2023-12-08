@@ -118,11 +118,13 @@ CREATE TABLE orders
     order_status order_status             NOT NULL,
     order_type   order_type               NOT NULL,
     table_number integer,
+    number_of_people integer,
     pickup_time  TIMESTAMP WITH TIME ZONE,
     address      varchar(255),
     total_price  decimal(10, 2)           NOT NULL,
     discount     decimal(10, 2)           NOT NULL,
     note         varchar(255),
+    phone         varchar(255),
     created_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

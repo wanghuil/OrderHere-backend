@@ -5,6 +5,7 @@ import com.backend.orderhere.dto.order.OrderGetDTO;
 import com.backend.orderhere.dto.order.PlaceOrderDTO;
 import com.backend.orderhere.dto.order.UpdateOrderStatusDTO;
 import com.backend.orderhere.exception.ResourceNotFoundException;
+import com.backend.orderhere.filter.JwtUtil;
 import com.backend.orderhere.mapper.OrderMapper;
 import com.backend.orderhere.model.*;
 import com.backend.orderhere.model.enums.OrderStatus;
@@ -75,8 +76,9 @@ public class OrderService {
     }
 
 
-    public Order PlaceOrder(PlaceOrderDTO placeOrderDTO) {
-        User user = userRepository.findByUserId(placeOrderDTO.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    public Order PlaceOrder(String token, PlaceOrderDTO placeOrderDTO) {
+//        User user = userRepository.findByUserId(placeOrderDTO.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        User user = userRepository.findByUserId(JwtUtil.getUserIdFromToken(token)).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         Order order = orderMapper.dtoToOrder(placeOrderDTO);
         Restaurant restaurant = restaurantRepository.findById(placeOrderDTO.getRestaurantId())
                 .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with ID: " + placeOrderDTO.getRestaurantId()));
