@@ -3,6 +3,7 @@ package com.backend.orderhere.controller.v1;
 import com.backend.orderhere.dto.PagingDto;
 import com.backend.orderhere.dto.dish.DishCreateDto;
 import com.backend.orderhere.dto.dish.DishGetDto;
+import com.backend.orderhere.dto.dish.DishUpdateDTO;
 import com.backend.orderhere.service.DishService;
 import com.backend.orderhere.service.enums.DishSort;
 import jakarta.validation.Valid;
@@ -52,5 +53,13 @@ public class DishController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void createDish(@Valid @ModelAttribute DishCreateDto dishCreateDto) {
         dishService.createDish(dishCreateDto);
+    }
+
+    @PreAuthorize("hasRole('sys_admin')")
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public DishGetDto updateDish(
+            @Valid @ModelAttribute DishUpdateDTO dishUpdateDto) {
+        return dishService.updateDish(dishUpdateDto);
     }
 }

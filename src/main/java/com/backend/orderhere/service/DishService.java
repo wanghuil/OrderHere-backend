@@ -3,6 +3,8 @@ package com.backend.orderhere.service;
 import com.backend.orderhere.dto.PagingDto;
 import com.backend.orderhere.dto.dish.DishCreateDto;
 import com.backend.orderhere.dto.dish.DishGetDto;
+import com.backend.orderhere.dto.dish.DishUpdateDTO;
+import com.backend.orderhere.exception.ResourceNotFoundException;
 import com.backend.orderhere.mapper.DishMapper;
 import com.backend.orderhere.model.Dish;
 import com.backend.orderhere.repository.DishRepository;
@@ -40,23 +42,23 @@ public class DishService {
     Page<Dish> dishPage = dishRepository.findDishesByRestaurantId(restaurantId, pageable);
 
     List<DishGetDto> dishGetDtoList = dishPage.getContent()
-        .stream()
-        .map(dishMapper::dishToDishGetDto)
-        .toList();
+            .stream()
+            .map(dishMapper::dishToDishGetDto)
+            .toList();
 
     return PagingDto.<List<DishGetDto>>builder()
-        .data(dishGetDtoList)
-        .currentPage(dishPage.getNumber() + 1)
-        .totalPages(dishPage.getTotalPages())
-        .totalItems(dishPage.getTotalElements())
-        .build();
+            .data(dishGetDtoList)
+            .currentPage(dishPage.getNumber() + 1)
+            .totalPages(dishPage.getTotalPages())
+            .totalItems(dishPage.getTotalElements())
+            .build();
   }
 
   public List<DishGetDto> getDishByCategory(Integer restaurantId, Integer categoryId) {
     return dishRepository.findAllByRestaurantIdAndCategoryCategoryId(restaurantId, categoryId)
-        .stream()
-        .map(dishMapper::dishToDishGetDto)
-        .toList();
+            .stream()
+            .map(dishMapper::dishToDishGetDto)
+            .toList();
   }
 
   @Transactional
@@ -77,4 +79,32 @@ public class DishService {
       log.error("Error occurred while creating dish", e);
     }
   }
+
+  @Transactional
+  public DishGetDto updateDish(DishUpdateDTO dishUpdateDto) {
+    try {
+      Dish existingDish = dishRepository.findById(dishUpdateDto.getDishId())
+              .orElseThrow(() -> new ResourceNotFoundException("Dish not found"));
+
+      String bucketName = "my-bucket";
+      minioService.createBucket(bucketName);
+
+      if (dishUpdateDto.getImageFile() != null && !dishUpdateDto.getImageFile().isEmpty()) {
+        String imageUrl = minioService.uploadFile(dishUpdateDto.getImageFile(), bucketName);
+        dishUpdateDto.setImageUrl(imageUrl);
+      } else {
+        dishUpdateDto.setImageUrl(existingDish.getImageUrl());
+      }
+
+      dishMapper.updateDishFromDishUpdateDTO(dishUpdateDto, existingDish);
+      dishRepository.save(existingDish);
+
+      return dishMapper.dishToDishGetDto(existingDish);
+
+    } catch (Exception e) {
+      log.error("Error occurred while updating dish", e);
+    }
+    return null;
+  }
+
 }

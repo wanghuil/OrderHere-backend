@@ -1,15 +1,18 @@
 package com.backend.orderhere.dto.dish;
 
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import jakarta.validation.constraints.Pattern;
-import org.springframework.security.core.parameters.P;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 
 @Data
-public class DishCreateDto {
+public class DishUpdateDTO {
+
+    private Integer dishId;
 
     @Pattern(regexp = "^[a-zA-Z0-9 ,.]+$", message = "Field must be alphanumeric")
     @Size(max = 100, message = "Field must be less than 100 characters")
