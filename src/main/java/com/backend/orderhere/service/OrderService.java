@@ -4,6 +4,7 @@ import com.backend.orderhere.dto.OrderDishDTO;
 import com.backend.orderhere.dto.order.OrderGetDTO;
 import com.backend.orderhere.dto.order.PlaceOrderDTO;
 import com.backend.orderhere.dto.order.UpdateOrderStatusDTO;
+import com.backend.orderhere.dto.user.UserSignUpRequestDTO;
 import com.backend.orderhere.exception.ResourceNotFoundException;
 import com.backend.orderhere.filter.JwtUtil;
 import com.backend.orderhere.mapper.OrderMapper;
@@ -28,16 +29,18 @@ public class OrderService {
     private final DishRepository dishRepository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
+    private final UserService userService;
 
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, LinkOrderDishRepository linkOrderRepository, DishRepository dishRepository, UserRepository userRepository, RestaurantRepository restaurantRepository) {
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, LinkOrderDishRepository linkOrderRepository, DishRepository dishRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, UserService userService) {
         this.orderRepository = orderRepository;
         this.linkOrderDishRepository = linkOrderRepository;
         this.dishRepository = dishRepository;
         this.orderMapper = orderMapper;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
+        this.userService = userService;
     }
 
     public List<OrderGetDTO> getAllOrders() {
@@ -75,10 +78,28 @@ public class OrderService {
         return orderMapper.fromOrdertoUpdateOrderStatusDTO(order);
     }
 
+    private UserSignUpRequestDTO createAnonymousUserSignUpRequest() {
+        UserSignUpRequestDTO userSignUpRequestDTO = new UserSignUpRequestDTO();
+        userSignUpRequestDTO.setUserName("anonymous" + System.currentTimeMillis());
+        userSignUpRequestDTO.setFirstName("Anonymous");
+        userSignUpRequestDTO.setLastName("User");
+        userSignUpRequestDTO.setEmail("anonymous" + System.currentTimeMillis() + "@example.com");
+        userSignUpRequestDTO.setPassword("defaultPassword");
+        return userSignUpRequestDTO;
+    }
 
     public Order PlaceOrder(String token, PlaceOrderDTO placeOrderDTO) {
 //        User user = userRepository.findByUserId(placeOrderDTO.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        User user = userRepository.findByUserId(JwtUtil.getUserIdFromToken(token)).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        Integer userId = (token != null) ? JwtUtil.getUserIdFromToken(token) : null;
+        User user;
+        if (userId == null) {
+            UserSignUpRequestDTO anonymousUserDTO = createAnonymousUserSignUpRequest();
+            user = userService.createAndReturnUser(anonymousUserDTO);
+        } else {
+            user = userRepository.findByUserId(userId)
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        }
+//        User user = userRepository.findByUserId(JwtUtil.getUserIdFromToken(token)).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         Order order = orderMapper.dtoToOrder(placeOrderDTO);
         Restaurant restaurant = restaurantRepository.findById(placeOrderDTO.getRestaurantId())
                 .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with ID: " + placeOrderDTO.getRestaurantId()));

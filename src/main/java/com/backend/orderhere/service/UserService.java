@@ -135,6 +135,20 @@ public class UserService {
     }
   }
 
+  public User createAndReturnUser(UserSignUpRequestDTO userSignUpRequestDTO) {
+    String hashedPassword = encoder.encode(userSignUpRequestDTO.getPassword());
+    User user = User.builder()
+            .username(userSignUpRequestDTO.getUserName())
+            .firstname(userSignUpRequestDTO.getFirstName())
+            .lastname(userSignUpRequestDTO.getLastName())
+            .email(userSignUpRequestDTO.getEmail())
+            .password(hashedPassword)
+            .point(INIT_REWARD_POINT)
+            .avatarUrl(INIT_AVATAR_URL)
+            .userRole(UserRole.customer)
+            .build();
+    return userRepository.save(user);
+  }
 
   public String checkUserOpenId(String openId, String provider) {
     if(provider.equals("google")){

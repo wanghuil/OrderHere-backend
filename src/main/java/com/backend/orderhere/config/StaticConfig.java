@@ -15,6 +15,7 @@ public class StaticConfig {
             "/v1/public/restaurants/**",
             "/v1/public/ingredients/**",
             "/v1/public/category/**",
+            "/health-check",
     };
 
     // JWT

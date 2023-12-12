@@ -48,6 +48,7 @@ public class SecurityConfig {
         .addFilter(new JwtCredentialsAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))))
         .addFilterAfter(new JwtVerifyFilter(), JwtCredentialsAuthenticationFilter.class)
             .authorizeHttpRequests(auth -> {
+              auth.requestMatchers(HttpMethod.POST, "/v1/public/orders").permitAll();
               auth.requestMatchers(StaticConfig.ignoreUrl).permitAll();
               auth.requestMatchers(HttpMethod.GET, StaticConfig.getOnlyUrl).permitAll();
               auth.anyRequest().authenticated();
