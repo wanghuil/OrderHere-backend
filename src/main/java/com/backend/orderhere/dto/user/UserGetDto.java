@@ -14,4 +14,5 @@ public class UserGetDto {
     private String email;
     private Integer point;
     private String avatarUrl;
+    private String address;
 }

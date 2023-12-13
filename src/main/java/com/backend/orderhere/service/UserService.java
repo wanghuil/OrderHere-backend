@@ -6,7 +6,9 @@ import com.backend.orderhere.exception.ResourceNotFoundException;
 import com.backend.orderhere.filter.JwtUtil;
 import com.backend.orderhere.mapper.UserMapper;
 import com.backend.orderhere.model.User;
+import com.backend.orderhere.model.UserAddress;
 import com.backend.orderhere.model.enums.UserRole;
+import com.backend.orderhere.repository.UserAddressRepository;
 import com.backend.orderhere.repository.UserRepository;
 import io.minio.errors.MinioException;
 import jakarta.transaction.Transactional;
@@ -29,17 +31,20 @@ public class UserService {
 
 
   private final UserRepository userRepository;
+
+  private final UserAddressRepository userAddressRepository;
   private final UserMapper userMapper;
   private final TokenService tokenService;
   private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
   private final MinioService minioService;
 
   @Autowired
-  public UserService(UserRepository userRepository, UserMapper userMapper, TokenService tokenService, MinioService minioService) {
+  public UserService(UserRepository userRepository, UserMapper userMapper, TokenService tokenService, MinioService minioService, UserAddressRepository userAddressRepository) {
     this.userRepository = userRepository;
     this.userMapper = userMapper;
     this.tokenService = tokenService;
     this.minioService = minioService;
+    this.userAddressRepository = userAddressRepository;
   }
 
   public UserProfileUpdateDTO updateUserProfile(Integer userId, UserProfileUpdateDTO dto) {
@@ -169,6 +174,8 @@ public class UserService {
     Integer userId = JwtUtil.getUserIdFromToken(token);
     User user = userRepository.findByUserId(userId).orElseThrow();
     UserGetDto userGetDto = userMapper.userToUserGetDto(user);
+    userAddressRepository.findFirstByUserIdAndIsDefault(userId, true)
+            .ifPresent(userAddress -> userGetDto.setAddress(userAddress.getAddress()));
     return userGetDto;
   }
 
@@ -179,6 +186,18 @@ public class UserService {
     try {
       userMapper.updateUserFromUserProfileUpdateDTO(dto, user);
       User updatedUser = userRepository.save(user);
+
+      UserAddress address = userAddressRepository.findFirstByUserIdAndIsDefault(updatedUser.getUserId(), true)
+              .orElseGet(() -> {
+                UserAddress newAddress = new UserAddress();
+                newAddress.setIsDefault(true);
+                return newAddress;
+              });
+
+      address.setUserId(updatedUser.getUserId());
+      address.setAddress(dto.getAddress());
+
+      userAddressRepository.save(address);
 
       return userMapper.userToUserProfileUpdateDTO(updatedUser);
     } catch (DataIntegrityViolationException e) {

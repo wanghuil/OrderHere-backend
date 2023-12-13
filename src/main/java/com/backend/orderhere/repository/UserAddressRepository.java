@@ -14,6 +14,8 @@ import java.util.Optional;
 public interface UserAddressRepository extends JpaRepository<UserAddress, Integer> {
   List<UserAddress> findAllByUserId(Integer userId);
 
+  Optional<UserAddress> findFirstByUserIdAndIsDefault(Integer userId, boolean isDefault);
+
   Optional<UserAddress> findByUserAddressId(Integer userAddressId);
 
   void deleteByUserAddressId(Integer userAddressId);
