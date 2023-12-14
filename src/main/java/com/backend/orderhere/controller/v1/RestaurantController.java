@@ -7,6 +7,7 @@ import com.backend.orderhere.service.RestaurantService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class RestaurantController {
     return restaurantService.getAllRestaurants();
   }
 
+  @PreAuthorize("hasRole('sys_admin')")
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public RestaurantGetDTO createRestaurant(@Valid @RequestBody RestaurantCreateDTO restaurantCreateDTO) {
@@ -36,6 +38,7 @@ public class RestaurantController {
     return restaurantService.getRestaurantById(restaurantId);
   }
 
+  @PreAuthorize("hasRole('sys_admin')")
   @PutMapping("/{restaurantId}")
   @ResponseStatus(HttpStatus.OK)
   public RestaurantGetDTO updateRestaurantById(@PathVariable Integer restaurantId, @Valid @RequestBody RestaurantUpdateDTO restaurantUpdateDTO) {

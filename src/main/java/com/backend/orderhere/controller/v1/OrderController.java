@@ -9,6 +9,7 @@ import com.backend.orderhere.model.enums.OrderType;
 import com.backend.orderhere.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,6 +50,7 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrderByOrderType(orderType));
     }
 
+    @PreAuthorize("hasRole('sys_admin')")
     @PatchMapping("/status")
     public ResponseEntity<UpdateOrderStatusDTO> updateOrderStatus(@RequestBody UpdateOrderStatusDTO updateOrderStatusDTO) {
         return ResponseEntity.ok().body(orderService.updateOrderStatus(updateOrderStatusDTO));
