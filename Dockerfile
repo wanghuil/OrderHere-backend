@@ -5,7 +5,11 @@ FROM openjdk:17-jdk
 WORKDIR /app
 
 # 将本地的 JAR 文件复制到 Docker 容器中的 /app 目录下
+
+COPY ./build/libs/OrderHere-1.0.0.jar /app/
+
 COPY *.jar /app/
+
 
 
 EXPOSE 8080
