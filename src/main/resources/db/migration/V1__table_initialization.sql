@@ -3,7 +3,7 @@ EXTENSION IF NOT EXISTS pgcrypto;
 
 CREATE TYPE user_role AS ENUM ('customer', 'merchant', 'sys_admin');
 CREATE TYPE booking_status AS ENUM ('pending', 'confirmed', 'cancelled');
-CREATE TYPE order_status AS ENUM ('pending', 'preparing', 'finished', 'cancelled', 'in transit', 'delivered', 'delayed');
+CREATE TYPE order_status AS ENUM ('pending', 'preparing', 'finished', 'cancelled', 'in_transit', 'delivered', 'delayed');
 CREATE TYPE order_type AS ENUM ('dine_in', 'delivery', 'pickup');
 CREATE TYPE week AS ENUM ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday');
 CREATE TYPE payment_status AS ENUM ('unpaid', 'paid', 'failed');

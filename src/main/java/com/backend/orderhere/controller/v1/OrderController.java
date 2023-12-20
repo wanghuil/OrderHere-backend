@@ -1,5 +1,7 @@
 package com.backend.orderhere.controller.v1;
 
+import com.backend.orderhere.dto.ingredient.DeleteIngredientDTO;
+import com.backend.orderhere.dto.order.DeleteOrderDTO;
 import com.backend.orderhere.dto.order.OrderGetDTO;
 import com.backend.orderhere.dto.order.PlaceOrderDTO;
 import com.backend.orderhere.dto.order.UpdateOrderStatusDTO;
@@ -7,7 +9,9 @@ import com.backend.orderhere.model.Order;
 import com.backend.orderhere.model.enums.OrderStatus;
 import com.backend.orderhere.model.enums.OrderType;
 import com.backend.orderhere.service.OrderService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -35,9 +39,9 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrderById(orderId));
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<OrderGetDTO>> getOrdersByUserId(@PathVariable Integer userId) {
-        return ResponseEntity.ok(orderService.getOrderByUserId(userId));
+    @GetMapping("/user")
+    public ResponseEntity<List<OrderGetDTO>> getOrdersByUserId(@RequestHeader(name = "Authorization") String authorizationHeader) {
+        return ResponseEntity.ok(orderService.getOrderByUserId(authorizationHeader));
     }
 
     @GetMapping("/status")
@@ -60,6 +64,18 @@ public class OrderController {
     public ResponseEntity<Order> placeOrder(@RequestHeader(name = "Authorization") String authorizationHeader, @RequestBody PlaceOrderDTO placeOrderDTO) {
         Order order = orderService.PlaceOrder(authorizationHeader, placeOrderDTO);
         return ResponseEntity.ok(order);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteOrder(@RequestBody DeleteOrderDTO deleteOrderDTO) {
+        try {
+            orderService.deleteOrderById(deleteOrderDTO);
+            return ResponseEntity.ok("Order deleted successfully");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 }
 

@@ -11,6 +11,7 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface OrderMapper {
     @Mapping(source = "user.userId", target = "userId")
+    @Mapping(source = "user.username", target = "username")
     @Mapping(source = "restaurant.restaurantId", target = "restaurantId")
     OrderGetDTO fromOrderToOrderGetDTO(Order order);
 

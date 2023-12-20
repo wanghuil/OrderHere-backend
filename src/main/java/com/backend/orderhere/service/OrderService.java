@@ -1,6 +1,7 @@
 package com.backend.orderhere.service;
 
 import com.backend.orderhere.dto.OrderDishDTO;
+import com.backend.orderhere.dto.order.DeleteOrderDTO;
 import com.backend.orderhere.dto.order.OrderGetDTO;
 import com.backend.orderhere.dto.order.PlaceOrderDTO;
 import com.backend.orderhere.dto.order.UpdateOrderStatusDTO;
@@ -43,37 +44,116 @@ public class OrderService {
         this.userService = userService;
     }
 
+    //    public List<OrderGetDTO> getAllOrders() {
+//        return orderRepository.findAll().stream().map(orderMapper::fromOrderToOrderGetDTO).collect(Collectors.toList());
+//    }
     public List<OrderGetDTO> getAllOrders() {
-        return orderRepository.findAll().stream().map(orderMapper::fromOrderToOrderGetDTO).collect(Collectors.toList());
+        List<Order> orders = orderRepository.findAll();
+        return orders.stream().map(order -> {
+            OrderGetDTO orderDTO = orderMapper.fromOrderToOrderGetDTO(order);
+            List<LinkOrderDish> linkOrderDishes = linkOrderDishRepository.findByOrderOrderId(order.getOrderId());
+            List<OrderDishDTO> dishDTOs = linkOrderDishes.stream().map(link -> {
+                OrderDishDTO dishDTO = new OrderDishDTO();
+                dishDTO.setDishId(link.getDish().getDishId());
+                dishDTO.setDishName(link.getDish().getDishName());
+                dishDTO.setDishPrice(link.getDish().getPrice());
+                dishDTO.setDishQuantity(link.getDishQuantity());
+                return dishDTO;
+            }).collect(Collectors.toList());
+            orderDTO.setDishes(dishDTOs);
+            return orderDTO;
+        }).collect(Collectors.toList());
     }
 
+    //    public OrderGetDTO getOrderById(Integer orderId) {
+//        return orderMapper.fromOrderToOrderGetDTO(orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found")));
+//    }
     public OrderGetDTO getOrderById(Integer orderId) {
-        return orderMapper.fromOrderToOrderGetDTO(orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found")));
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+        OrderGetDTO orderDTO = orderMapper.fromOrderToOrderGetDTO(order);
+        List<LinkOrderDish> linkOrderDishes = linkOrderDishRepository.findByOrderOrderId(order.getOrderId());
+        List<OrderDishDTO> dishDTOs = linkOrderDishes.stream().map(link -> {
+            OrderDishDTO dishDTO = new OrderDishDTO();
+            dishDTO.setDishId(link.getDish().getDishId());
+            dishDTO.setDishName(link.getDish().getDishName());
+            dishDTO.setDishPrice(link.getDish().getPrice());
+            dishDTO.setDishQuantity(link.getDishQuantity());
+            return dishDTO;
+        }).collect(Collectors.toList());
+        orderDTO.setDishes(dishDTOs);
+        return orderDTO;
     }
 
-    public List<OrderGetDTO> getOrderByUserId(Integer userId) {
+    public List<OrderGetDTO> getOrderByUserId(String token) {
+        Integer userId = (token != null) ? JwtUtil.getUserIdFromToken(token) : null;
         List<Order> orders = orderRepository.findByUserUserId(userId);
         if (orders.isEmpty()) {
             throw new ResourceNotFoundException("No orders found for the user");
         }
-        return orders.stream()
-                .map(orderMapper::fromOrderToOrderGetDTO)
-                .collect(Collectors.toList());
+        return orders.stream().map(order -> {
+            OrderGetDTO orderDTO = orderMapper.fromOrderToOrderGetDTO(order);
+            List<LinkOrderDish> linkOrderDishes = linkOrderDishRepository.findByOrderOrderId(order.getOrderId());
+            List<OrderDishDTO> dishDTOs = linkOrderDishes.stream().map(link -> {
+                OrderDishDTO dishDTO = new OrderDishDTO();
+                dishDTO.setDishId(link.getDish().getDishId());
+                dishDTO.setDishName(link.getDish().getDishName());
+                dishDTO.setDishPrice(link.getDish().getPrice());
+                dishDTO.setDishQuantity(link.getDishQuantity());
+                return dishDTO;
+            }).collect(Collectors.toList());
+            orderDTO.setDishes(dishDTOs);
+            return orderDTO;
+        }).collect(Collectors.toList());
     }
 
+    //    public List<OrderGetDTO> getOrderByOrderStatus(OrderStatus orderStatus) {
+//        return orderRepository.findByOrderStatus(orderStatus).stream().map(orderMapper::fromOrderToOrderGetDTO).collect(Collectors.toList());
+//    }
     public List<OrderGetDTO> getOrderByOrderStatus(OrderStatus orderStatus) {
-        return orderRepository.findByOrderStatus(orderStatus).stream().map(orderMapper::fromOrderToOrderGetDTO).collect(Collectors.toList());
+        List<Order> orders = orderRepository.findByOrderStatus(orderStatus);
+        return orders.stream().map(order -> {
+            OrderGetDTO orderDTO = orderMapper.fromOrderToOrderGetDTO(order);
+            List<LinkOrderDish> linkOrderDishes = linkOrderDishRepository.findByOrderOrderId(order.getOrderId());
+            List<OrderDishDTO> dishDTOs = linkOrderDishes.stream().map(link -> {
+                OrderDishDTO dishDTO = new OrderDishDTO();
+                dishDTO.setDishId(link.getDish().getDishId());
+                dishDTO.setDishName(link.getDish().getDishName());
+                dishDTO.setDishPrice(link.getDish().getPrice());
+                dishDTO.setDishQuantity(link.getDishQuantity());
+                return dishDTO;
+            }).collect(Collectors.toList());
+            orderDTO.setDishes(dishDTOs);
+            return orderDTO;
+        }).collect(Collectors.toList());
     }
 
+    //    public List<OrderGetDTO> getOrderByOrderType(OrderType orderType) {
+//        return orderRepository.findByOrderType(orderType).stream().map(orderMapper::fromOrderToOrderGetDTO).collect(Collectors.toList());
+//    }
     public List<OrderGetDTO> getOrderByOrderType(OrderType orderType) {
-        return orderRepository.findByOrderType(orderType).stream().map(orderMapper::fromOrderToOrderGetDTO).collect(Collectors.toList());
+        List<Order> orders = orderRepository.findByOrderType(orderType);
+        return orders.stream().map(order -> {
+            OrderGetDTO orderDTO = orderMapper.fromOrderToOrderGetDTO(order);
+            List<LinkOrderDish> linkOrderDishes = linkOrderDishRepository.findByOrderOrderId(order.getOrderId());
+            List<OrderDishDTO> dishDTOs = linkOrderDishes.stream().map(link -> {
+                OrderDishDTO dishDTO = new OrderDishDTO();
+                dishDTO.setDishId(link.getDish().getDishId());
+                dishDTO.setDishName(link.getDish().getDishName());
+                dishDTO.setDishPrice(link.getDish().getPrice());
+                dishDTO.setDishQuantity(link.getDishQuantity());
+                return dishDTO;
+            }).collect(Collectors.toList());
+            orderDTO.setDishes(dishDTOs);
+            return orderDTO;
+        }).collect(Collectors.toList());
     }
 
     @Transactional
     public UpdateOrderStatusDTO updateOrderStatus(UpdateOrderStatusDTO updateOrderStatusDTO) {
 
         Order order = orderRepository.findById(updateOrderStatusDTO.getOrderId()).orElseThrow(() -> new ResourceNotFoundException("Order not found"));
-        order.setOrderStatus(updateOrderStatusDTO.getOrderStatus());
+        OrderStatus status = OrderStatus.valueOf(updateOrderStatusDTO.getOrderStatus());
+        order.setOrderStatus(status);
         orderRepository.save(order);
         return orderMapper.fromOrdertoUpdateOrderStatusDTO(order);
     }
@@ -117,5 +197,14 @@ public class OrderService {
         }
         linkOrderDishRepository.saveAll(links);
         return order;
+    }
+
+    @Transactional
+    public void deleteOrderById(DeleteOrderDTO deleteOrderDTO) {
+        int orderId = deleteOrderDTO.getOrderId();
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with ID: " + orderId));
+        linkOrderDishRepository.deleteByOrderOrderId(orderId);
+        orderRepository.delete(order);
     }
 }
