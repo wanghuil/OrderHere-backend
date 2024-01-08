@@ -11,7 +11,7 @@ CREATE TYPE payment_status AS ENUM ('unpaid', 'paid', 'failed');
 CREATE TABLE users
 (
     user_id          serial PRIMARY KEY       NOT NULL UNIQUE,
-    username         varchar(255)             NOT NULL UNIQUE,
+    username         varchar(255)             NOT NULL,
     firstname        varchar(255)             NOT NULL,
     lastname         varchar(255)             NOT NULL,
     password         varchar(255)             NOT NULL,
