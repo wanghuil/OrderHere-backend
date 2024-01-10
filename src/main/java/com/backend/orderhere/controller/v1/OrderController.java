@@ -61,9 +61,9 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Order> placeOrder(@RequestHeader(name = "Authorization") String authorizationHeader, @RequestBody PlaceOrderDTO placeOrderDTO) {
-        Order order = orderService.PlaceOrder(authorizationHeader, placeOrderDTO);
-        return ResponseEntity.ok(order);
+    public ResponseEntity<Integer> placeOrder(@RequestHeader(name = "Authorization") String authorizationHeader, @RequestBody PlaceOrderDTO placeOrderDTO) {
+        Integer orderId = orderService.PlaceOrder(authorizationHeader, placeOrderDTO).getOrderId();
+        return ResponseEntity.ok(orderId);
     }
 
     @DeleteMapping("/delete")
