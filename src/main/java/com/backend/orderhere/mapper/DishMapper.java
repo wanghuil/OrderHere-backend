@@ -15,6 +15,7 @@ public interface DishMapper {
   @Mapping(source = "category.categoryName", target = "categoryName")
   DishGetDto dishToDishGetDto(Dish dish);
 
+  @Mapping(source = "categoryId", target = "category.categoryId")
   Dish dishCreateDtoToDish(DishCreateDto dishCreateDto);
   void updateDishFromDishUpdateDTO(DishUpdateDTO dishUpdateDTO, @MappingTarget Dish dish);
 }

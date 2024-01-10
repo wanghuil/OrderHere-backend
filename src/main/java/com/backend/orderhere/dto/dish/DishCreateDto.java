@@ -25,4 +25,5 @@ public class DishCreateDto {
     private MultipartFile imageFile;
     private Integer restaurantId;
     private Boolean availability;
+    private Integer categoryId;
 }

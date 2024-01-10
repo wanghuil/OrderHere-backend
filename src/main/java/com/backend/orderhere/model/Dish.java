@@ -54,7 +54,6 @@ public class Dish {
   @Column(name = "updated_time", nullable = false)
   private ZonedDateTime updatedTime;
 
-
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "category_id")
   private Category category;
