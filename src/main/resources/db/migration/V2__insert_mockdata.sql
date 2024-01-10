@@ -1,7 +1,10 @@
 INSERT INTO users (username, firstname, lastname, password, user_email, avatar_url, point, user_role)
 VALUES ('user1', 'user', 'user', '$2a$10$.wLQ2xMfPLjfhCG6cnw.PupQunIZhv6F09ChvsxwvJgnAT.JZUtxq', 'admin@email.com',
         'https://freepngimg.com/thumb/google/66726-customer-account-google-service-button-search-logo.png',
-        100, 'sys_admin');
+        100, 'sys_admin'),
+        ('driver', 'driver', 'driver', '$2a$10$.wLQ2xMfPLjfhCG6cnw.PupQunIZhv6F09ChvsxwvJgnAT.JZUtxq', 'driver@email.com',
+        'https://cdn.icon-icons.com/icons2/2335/PNG/512/food_delivery_guy_avatar_people_icon_142370.png',
+        100, 'driver');
 -- password:   123456
 
 
