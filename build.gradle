@@ -89,6 +89,10 @@ dependencies {
     //minIO
     implementation 'io.minio:minio:8.5.2'
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+
+    //devops prometheus
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
 }
 
 tasks.named('test') {

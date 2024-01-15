@@ -36,3 +36,9 @@ out/
 ### VS Code ###
 .vscode/
 sendgrid.env
+
+### terraform ###
+*.tfstate
+*.tfstate.backup
+.terraform/
+*.tfvars

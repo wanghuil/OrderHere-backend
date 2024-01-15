@@ -1,18 +1,16 @@
-# 使用包含 Java 运行环境的官方 OpenJDK 镜像
-FROM openjdk:17-jdk
+# use the official image from docker hub
+FROM gradle:8.5-jdk17
 
-# 设置 Docker 容器内的工作目录
+#set the work directory
 WORKDIR /app
 
-# 将本地的 JAR 文件复制到 Docker 容器中的 /app 目录下
+#copy the project content to the docker 
+COPY . /app
 
-COPY ./build/libs/OrderHere-1.0.0.jar /app/
-
-COPY *.jar /app/
-
-
+RUN ./gradlew build -x test
 
 EXPOSE 8080
 
-# 定义 Docker 容器启动时执行的命令，运行 JAR 文件
-CMD ["java", "-jar", "/app/OrderHere-1.0.0.jar"]
+CMD ["ls"]
+CMD ["cd", "build"]
+CMD ["ls"]
