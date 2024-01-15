@@ -10,7 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-
+import java.util.Set;
 
 @Entity
 @Getter
@@ -57,4 +57,14 @@ public class Dish {
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "category_id")
   private Category category;
+
+  @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<LinkIngredientDish> linkIngredientDishes;
+
+  @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<Rating> ratings;
+
+  @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<LinkOrderDish> linkOrderDishes;
+  // constructors, getters, setters, and other methods
 }

@@ -107,4 +107,10 @@ public class DishService {
     return null;
   }
 
+  @Transactional
+  public void deleteDish(Integer dishId) {
+    Dish dish = dishRepository.findById(dishId)
+            .orElseThrow(() -> new ResourceNotFoundException("Dish not found with id: " + dishId));
+    dishRepository.delete(dish);
+  }
 }

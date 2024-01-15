@@ -62,4 +62,14 @@ public class DishController {
             @Valid @ModelAttribute DishUpdateDTO dishUpdateDto) {
         return dishService.updateDish(dishUpdateDto);
     }
+
+    @PreAuthorize("hasRole('sys_admin')")
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/1/{dishId}")
+    public void deleteDish(@PathVariable Integer dishId) {
+
+//        linkIngredientRepository.deleteByDishId(dishId);
+
+        dishService.deleteDish(dishId);
+    }
 }
