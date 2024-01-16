@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.ArrayList;
 
 @Service
 @Transactional
@@ -60,7 +61,7 @@ public class RatingService {
         Long ratingCount = ratingRepository.countByDishId(dishId);
         BigDecimal averageRating = ratingRepository.calculateAverageRatingForDish(dishId);
         Dish dish = dishRepository.findById(dishId).orElseThrow(() -> new IllegalArgumentException("Dish not found"));
-        if (averageRating == null || ratingCount < 5) {
+        if (averageRating == null ) {
             dish.setRating(null);
             log.info("Dish : {} doesn't have enough ratings yet", dishId);
         } else {
@@ -68,5 +69,31 @@ public class RatingService {
             log.info("Dish : {} current rating changes to {}", dishId, averageRating);
         }
         dishRepository.save(dish);
+    }
+
+
+    public List<RatingGetDto> createRatings(List<RatingPostDto> ratingPostDtos) {
+        List<RatingGetDto> ratingGetDtos = new ArrayList<>();
+        for (RatingPostDto ratingPostDto : ratingPostDtos) {
+
+            Dish dish = dishRepository.findById(ratingPostDto.getDishId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Dish not found with id: " + ratingPostDto.getDishId()));
+            User user = userRepository.findById(ratingPostDto.getUserId())
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + ratingPostDto.getUserId()));
+
+            Rating rating = new Rating();
+            rating.setDish(dish);
+            rating.setUser(user);
+            rating.setRatingValue(ratingPostDto.getRatingValue());
+            rating.setComments(ratingPostDto.getComments());
+
+            Rating savedRating = ratingRepository.save(rating);
+
+            RatingGetDto ratingGetDto = ratingMapper.ratingToRatingGetDto(savedRating);
+            ratingGetDtos.add(ratingGetDto);
+
+            updateDishRating(dish.getDishId());
+        }
+        return ratingGetDtos;
     }
 }

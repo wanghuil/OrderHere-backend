@@ -41,4 +41,10 @@ public class RatingController {
   public void deleteRating(@PathVariable Integer ratingId) {
     ratingService.deleteRating(ratingId);
   }
+
+  @PostMapping("/submit-ratings")
+  @ResponseStatus(HttpStatus.CREATED)
+  public List<RatingGetDto> createRatings(@RequestBody List<RatingPostDto> ratingPostDtos) {
+    return ratingService.createRatings(ratingPostDtos);
+  }
 }

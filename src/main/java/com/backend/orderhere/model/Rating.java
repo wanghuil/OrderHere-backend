@@ -39,10 +39,10 @@ public class Rating {
   private String comments;
 
   @CreationTimestamp
-  @Column(name = "created_time", nullable = false)
+  @Column(name = "created_time", nullable = true)
   private ZonedDateTime createdTime;
 
   @UpdateTimestamp
-  @Column(name = "updated_time", nullable = false)
+  @Column(name = "updated_time", nullable = true)
   private ZonedDateTime updatedTime;
 }
