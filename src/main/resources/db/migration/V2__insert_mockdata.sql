@@ -9,7 +9,7 @@ VALUES ('user1', 'user', 'user', '$2a$10$.wLQ2xMfPLjfhCG6cnw.PupQunIZhv6F09Chvsx
 
 
 INSERT INTO user_address (user_id, address, is_default)
-VALUES (1, '123 Main St', true),
+VALUES (1, '123 Main St, Blackburn VIC 3130', true),
        (1, '456 Elm St', false);
 
 
@@ -22,7 +22,7 @@ VALUES ('Sugar', 'grams'),
 
 INSERT INTO restaurant (name, description, address, contact_number, abn,
                         owner_name, owner_mobile, owner_address, owner_email, owner_crn, average_rating)
-VALUES ('Restaurant A', 'A description of Restaurant A', '123 Main St', '123-456-7890',
+VALUES ('Restaurant A', 'A description of Restaurant A', '123 Main St, Blackburn VIC 3130', '123-456-7890',
         '12345678901', 'John Doe', '987-654-3210', '456 Elm St', 'john@example.com', '123456789A', 4.5),
        ('Restaurant B', 'A description of Restaurant B', '789 Oak St',
         '987-654-3210', '12345678902', 'Jane Smith', '123-456-7890', '123 Main St',
@@ -88,7 +88,7 @@ VALUES (1, 1, 4.5, 'Delicious dish!'),
 
 INSERT INTO orders (user_id, restaurant_id, order_status, order_type, table_number, number_of_people, pickup_time, address, total_price,
                     discount, note, phone)
-VALUES (1, 1, 'pending', 'delivery', NULL, NULL, NULL, '123 Main St', 50.00, 0.00, 'No special instructions', '0430000000'),
+VALUES (1, 1, 'pending', 'delivery', NULL, NULL, NULL, '123 Main St, Blackburn VIC 3130', 50.00, 0.00, 'No special instructions', '0430000000'),
        (1, 1, 'preparing', 'pickup', NULL, NULL, NULL, NULL, 35.50, 0.00, 'Extra ketchup packets', NULL),
        (1, 2, 'finished', 'dine_in', 1, 2, NULL, NULL, 75.25, 10.00, 'Call upon arrival', '0430000001'),
        (1, 1, 'cancelled', 'dine_in', NULL, NULL, NULL, NULL, 75.25, 10.00, 'Call upon arrival', '0430000002');

@@ -54,7 +54,7 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrderByOrderType(orderType));
     }
 
-    @PreAuthorize("hasRole('sys_admin')")
+    @PreAuthorize("hasRole('sys_admin') or hasRole('driver')")
     @PatchMapping("/status")
     public ResponseEntity<UpdateOrderStatusDTO> updateOrderStatus(@RequestBody UpdateOrderStatusDTO updateOrderStatusDTO) {
         return ResponseEntity.ok().body(orderService.updateOrderStatus(updateOrderStatusDTO));
