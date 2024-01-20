@@ -74,7 +74,7 @@ resource "aws_cloudwatch_log_group" "eks_control_plane_logs" {
 
 
 #Create kubeconfig
-resource "null_resource" "java"{
+resource "null_resource" "java" {
   depends_on = [helm_release.aws-load-balancer-controller]
   provisioner "local-exec" {
     command = "aws eks --region us-east-1 update-kubeconfig --name $AWS_CLUSTER_NAME"

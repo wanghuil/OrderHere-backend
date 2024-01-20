@@ -30,11 +30,11 @@ variable "ECR_IMAGE" {
 }
 
 variable "r53_zone_id" {
-  type    = string
+  type = string
 }
 
 variable "r53_record_name" {
-  type    = string
+  type = string
 }
 
 variable "environment" {
@@ -113,21 +113,21 @@ variable "alb_ingress_image_tag" {
 }
 
 variable "alb_dns_name" {
-  type    = string
+  type = string
 }
 
 variable "alb_zone_id" {
-  type    = string
+  type = string
 }
 
 variable "PREFIX" {
-  type    = string
+  type = string
 }
 
 variable "enable_fluentbit" {
   type        = bool
   description = "Boolean to enable fluentbit"
-  default = true
+  default     = true
 }
 
 variable "log_retention_in_days" {

@@ -7,10 +7,10 @@ module "eks_blueprints_addons" {
   cluster_version   = var.cluster_version
   oidc_provider_arn = data.aws_eks_cluster.dev.identity[0].oidc[0].issuer
 
-#   enable_velero = true
-#   velero = {
-#     s3_backup_location = "bucket-s3-terraform-orderhere-velero/*"
-#   }
+  #   enable_velero = true
+  #   velero = {
+  #     s3_backup_location = "bucket-s3-terraform-orderhere-velero/*"
+  #   }
 
   helm_releases = {
     velero = {
@@ -19,7 +19,7 @@ module "eks_blueprints_addons" {
       create_namespace = true
       chart            = "velero"
       repository       = "https://vmware-tanzu.github.io/helm-charts"
-      values = [templatefile("velerovalues.yaml", { ROLE = aws_iam_role.velero-backup-role.arn })]
+      values           = [templatefile("velerovalues.yaml", { ROLE = aws_iam_role.velero-backup-role.arn })]
     }
   }
 

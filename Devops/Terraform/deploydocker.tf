@@ -79,12 +79,12 @@ resource "kubernetes_ingress_v1" "orderhere" {
     name      = "orderhere-${var.PREFIX}"
     namespace = kubernetes_namespace.orderhere.metadata[0].name
     annotations = {
-      "alb.ingress.kubernetes.io/scheme"               = "internet-facing"
-      "alb.ingress.kubernetes.io/target-type"          = "ip"
-      "alb.ingress.kubernetes.io/certificate-arn"      = module.cert.arn
-      "alb.ingress.kubernetes.io/listen-ports"         = jsonencode([{"HTTP": 80}, {"HTTPS": 443}])
-      "alb.ingress.kubernetes.io/ssl-redirect"         = "443"
-      "alb.ingress.kubernetes.io/group.name"           = "orderhere-${var.PREFIX}"
+      "alb.ingress.kubernetes.io/scheme"          = "internet-facing"
+      "alb.ingress.kubernetes.io/target-type"     = "ip"
+      "alb.ingress.kubernetes.io/certificate-arn" = module.cert.arn
+      "alb.ingress.kubernetes.io/listen-ports"    = jsonencode([{ "HTTP" : 80 }, { "HTTPS" : 443 }])
+      "alb.ingress.kubernetes.io/ssl-redirect"    = "443"
+      "alb.ingress.kubernetes.io/group.name"      = "orderhere-${var.PREFIX}"
     }
   }
 
@@ -94,7 +94,7 @@ resource "kubernetes_ingress_v1" "orderhere" {
       host = var.r53_record_name
       http {
         path {
-          path     = "/"
+          path      = "/"
           path_type = "Prefix"
 
           backend {
@@ -124,7 +124,7 @@ resource "aws_route53_record" "alb_record" {
 
   alias {
     name                   = var.alb_dns_name #check dns name once alb created
-    zone_id                = var.alb_zone_id #check zone id once alb created
+    zone_id                = var.alb_zone_id  #check zone id once alb created
     evaluate_target_health = true
   }
 }
