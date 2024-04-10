@@ -9,15 +9,6 @@ The following architecture diagram illustrates the high-level structure of our s
 
 ![Architecture Diagram](pics/OrderHere.png)
 
-### Frontend
-
-- **Vercel**: Our frontend is deployed on Vercel for serverless hosting, providing seamless scaling and a robust deployment pipeline.
-- **GitHub Repository**: The source code for the frontend is maintained in a GitHub repository with automated deployments to Vercel upon each push to the main branch.
-
-### DNS Management
-
-- **Route 53**: We use Amazon Route 53 for DNS management, which provides reliable and scalable routing to our frontend and backend services.
-
 ### Backend
 
 - **Amazon EKS (Elastic Kubernetes Service)**: Backend services are managed and orchestrated through Kubernetes within EKS, providing high availability and scalability.
