@@ -7,7 +7,7 @@ This document provides a high-level overview of the architecture for our system.
 
 The following architecture diagram illustrates the high-level structure of our system:
 
-![Architecture Diagram](path-to-your-diagram)
+![Architecture Diagram](pics/architecture-diagram.png)
 
 ### Frontend
 
